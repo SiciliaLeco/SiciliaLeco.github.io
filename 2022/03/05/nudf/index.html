@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Sicilia Lee (李颀琳）">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Sicilia Lee (李颀琳）">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="Neural Unsigned Distance Field 解读0. 基本思想Implict Function Learning(IFL) 的核心思想是基于学习将空间中的连续点分类（classify）成inside 和 outside 两种。对于点的特征，可以用Occupancy或者SDF value 来衡量。因此IFL的输出可以是连续的空间表面。但是传统的IFL有一个问题，就是是重建的物体必须">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Neural Unsigned Distance Field 解读">
+<meta property="og:url" content="http://example.com/2022/03/05/nudf/index.html">
+<meta property="og:site_name" content="Sicilia Lee&#39;s blog">
+<meta property="og:description" content="Neural Unsigned Distance Field 解读0. 基本思想Implict Function Learning(IFL) 的核心思想是基于学习将空间中的连续点分类（classify）成inside 和 outside 两种。对于点的特征，可以用Occupancy或者SDF value 来衡量。因此IFL的输出可以是连续的空间表面。但是传统的IFL有一个问题，就是是重建的物体必须">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-05T03:32:26.000Z">
+<meta property="article:modified_time" content="2022-03-12T08:11:41.062Z">
+<meta property="article:author" content="Sicilia Lee (李颀琳）">
+<meta property="article:tag" content="Computer Graphics">
+<meta property="article:tag" content="Computer Vision">
+<meta name="twitter:card" content="summary">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.jpeg">
+    
+    <title>Neural Unsigned Distance Field 解读 · Sicilia&#39;s Studio</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Sicilia Lee's blog" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>Sicilia's Studio</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Sicilia&#39;s Studio</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">Neural Unsigned Distance Field 解读</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/bkgrd.png)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                Neural Unsigned Distance Field 解读
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Graphics">Computer Graphics</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Vision">Computer Vision</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">2.2k</span>Reading time: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/03/05</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="Neural-Unsigned-Distance-Field-解读"><a href="#Neural-Unsigned-Distance-Field-解读" class="headerlink" title="Neural Unsigned Distance Field 解读"></a>Neural Unsigned Distance Field 解读</h1><h2 id="0-基本思想"><a href="#0-基本思想" class="headerlink" title="0. 基本思想"></a>0. 基本思想</h2><p>Implict Function Learning(IFL) 的核心思想是基于学习将空间中的连续点分类（classify）成inside 和 outside 两种。对于点的特征，可以用Occupancy或者SDF value 来衡量。因此IFL的输出可以是连续的空间表面。但是传统的IFL有一个问题，就是是重建的物体必须是封闭的，当物体不封闭时，就不能区分出查询点到底是在物体的内部还是在外部。（比如car，cylinder等）因此作者提出了NDF来解决这个问题。</p>
+<p>NDF直接预测了UDF（unsigned distance field）该变量是点到表面的无符号距离。通过距离就可以很好地来探索非闭合的物体。并且NDF还可以用于2D shape representation，这在之前是不可能用SDF或者Occupancy表达的。</p>
+<p>本文的创新主要是引入了NDF，NDF不需要对mesh进行预结算，在很多数据集上都达到了SOTA。</p>
+<p>NDF会带来一些问题：</p>
+<ol>
+<li>预测的无符号距离函数没有符号，在曲面上不可微</li>
+<li>大多数生成点、网格和渲染图像的算法都只用SDF，没有关于无符号的后处理算法。</li>
+</ol>
+<h2 id="1-体素化-voxelization"><a href="#1-体素化-voxelization" class="headerlink" title="1. 体素化 voxelization"></a>1. 体素化 voxelization</h2><p>体素化通俗地说就是得到点云物体的乐高模型（体素化的操作可以对模型进行简化，从而得到<strong>均匀</strong>的网格。对点云进行体素化的处理，算法的主要流程是：<br>首先，计算出点云在X、Y、Z三个方向数据坐标的最大值和最小值，从而确定长宽高。这一步骤得到的初始体素可以包含所有的点云数据。<br>建立了基本体素后，进行划分，使用Bresenham算法那剔除初始体素中无效的体素，剩余的就是点云体素化以后的结果。</p>
+<h3 id="1-1-off文件格式"><a href="#1-1-off文件格式" class="headerlink" title="1.1 .off文件格式"></a>1.1 .off文件格式</h3><p><code>.off</code> 是一种3D文本格式，通过定义点、线、面的方式来描述3D物体。一般可以用纯文本的格式打开。这一部分对<code>.off</code>文件格式进行讲解。有多种形式，这里用手边有的ModelNet40数据为例：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">OFF</span><br><span class="line">11634 14640 0</span><br><span class="line">19.6172 118.1 140.1</span><br><span class="line">10.5766 108.108 136.696</span><br><span class="line">18.9919 111.778 136.696</span><br><span class="line">.....</span><br><span class="line">3 480 243 481</span><br><span class="line">3 481 243 482</span><br><span class="line">3 462 483 484</span><br><span class="line">.....</span><br></pre></td></tr></table></figure><br>第一行表示的是OFF格式，所有的.off文件都是这样开头的。第二行，表示的是当前这个三维几何问题顶点数目、面数目，边数目。边数目为0说明是点云的文件。第三行到第3+N行（N为点的总个数）后面剩下的每一行，表示的是当前的第i个面由3个点组成，并且附上了这三个点的下标。读取.off文件并返回点面集合的代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_off</span>(<span class="params">filename</span>):</span></span><br><span class="line">    points = []</span><br><span class="line">    faces = []</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        first = f.readline()</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">len</span>(first) &gt; <span class="number">4</span>):  <span class="comment"># Too handle error in .off like OFF492 312 0</span></span><br><span class="line">            n, m, c = first[<span class="number">3</span>:].split(<span class="string">&#x27; &#x27;</span>)[:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            n, m, c = f.readline().rstrip().split(<span class="string">&#x27; &#x27;</span>)[:]</span><br><span class="line">        n = <span class="built_in">int</span>(n)</span><br><span class="line">        m = <span class="built_in">int</span>(m)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            value = f.readline().rstrip().split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">            points.append([<span class="built_in">float</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> value])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            value = f.readline().rstrip().split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">            faces.append([<span class="built_in">int</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> value])</span><br><span class="line">    points = np.array(points)</span><br><span class="line">    faces = np.array(faces)</span><br><span class="line">    <span class="keyword">return</span> points, faces</span><br></pre></td></tr></table></figure><br>在本作中，也是使用了<code>.off</code>文件进行了一系列转换最终得到了体素化的结果。下面一部分就具体讲怎么做体素化的。</p>
+<h3 id="1-2-dataprocessing"><a href="#1-2-dataprocessing" class="headerlink" title="1.2 /dataprocessing"></a>1.2 /dataprocessing</h3><p>从对NDF算法的理解上，我们知道encoder的输入是有面和点的，因此只提供点云的数据是完全不够的。所以，这个文件夹下的代码文件目的是为了对点云数据集进行预处理，得到点对应的面， 从而去求他的unsigned distance的值。对于数据的处理主要分为以下的内容：</p>
+<p>(1) scale的部分。<br>我理解的scale目的就是对原始的点云数据（raw data）做normalize，并且点的数量也变得稀疏。这一部分的核心代码是<code>convert_to_scaled_off.py</code>。</p>
+<p>(2)对点云做边界采样的部分。<br>这一部分的内容比较类似Occupancy Networks 中的做法，即在对象的三维边界体中随机采样点，对于第i个样本，采样K个点，然后评估这些位置的小批量损失。</p>
+<p>这一部分的核心代码是<code>boundary_sampling.py</code>函数。这一部分首先是通过给的sigma参数对于原始的点云数据进行采样，然后通过igl库里自带的signed_distance函数生成预测的距离函数的ground truth。这一部分的代码返回了三个内容，df（ground truth of ndf），grid_coord以及points（采样的点）。作者在github的<a target="_blank" rel="noopener" href="https://github.com/jchibane/ndf/issues/19">issue</a>中对<code>grid_coord</code>进行了解释，称是让pytorch的<code>grid_sample</code>函数作为输入使用。<br>本部分记录在<code>.npz</code>文件中的内容如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.savez(out_file, points=boundary_points, df = df, grid_coords= grid_coords)</span><br></pre></td></tr></table></figure></p>
+<p>(3)对点云做体素化。<br>这一部分的核心代码是<code>voxelized_pointcloud_sampling.py</code>。首先构建出初始的网格点grid_points，后续用来填充这一部分的occupancy值（从而可以构建出点云的体素化）在Occupancy Networks这篇论文里，有这样的解释：</p>
+<blockquote>
+<p>For extracting the isosurface corresponding to a new observation given a trained occupancy network, we introduce Multiresolution IsoSurface Extraction (MISE), a hierarchical isosurface extraction algorithm. By incrementally building an octree MISE enables us to extract high resolution meshes from the occupancy network without densely evaluating all points of a high-dimensional occupancy grid.</p>
+</blockquote>
+<p>我个人认为ndf这里也是类似的处理方法，即使用了空间二叉树（也就是代码里的<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/127022333">kdTree</a>）来计算了所谓的isosurface。这个surface后面会被用在训练里。本部分得到的内容记录如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.savez(out_file, point_cloud=point_cloud, compressed_occupancies = compressed_occupancies, bb_min = cfg.bb_min, bb_max = cfg.bb_max, res = cfg.input_res)</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-模型训练"><a href="#2-模型训练" class="headerlink" title="2. 模型训练"></a>2. 模型训练</h2><h3 id="2-1-数据集使用"><a href="#2-1-数据集使用" class="headerlink" title="2.1 数据集使用"></a>2.1 数据集使用</h3><p>在<code>/data/voxelized_data_shapenet.py</code>中，当调用get item函数的时候，返回的内容如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> &#123;<span class="string">&#x27;grid_coords&#x27;</span>:np.array(coords, dtype=np.float32),<span class="string">&#x27;df&#x27;</span>: np.array(df, dtype=np.float32),<span class="string">&#x27;points&#x27;</span>:np.array(points, dtype=np.float32), <span class="string">&#x27;inputs&#x27;</span>: np.array(<span class="built_in">input</span>, dtype=np.float32), <span class="string">&#x27;path&#x27;</span> : path&#125;</span><br></pre></td></tr></table></figure><br>这里的input是 <code>/voxelized_point_cloud_&#123;&#125;res_&#123;&#125;points.npz</code>这一类型的文件存储的，也就是体素化得到的Occupancies。其他的都是 <code>/boundary_&#123;&#125;_samples.npz</code>里得到的内容。详细的格式解读在1.2中有解释。</p>
+<h3 id="2-2-模型构建"><a href="#2-2-模型构建" class="headerlink" title="2.2 模型构建"></a>2.2 模型构建</h3><p>在<code>models/data/local_model.py</code>中写好了整个ndf算法的pytorch框架。encoder的输入是体素化的surface，用occupancy信息来作为encoder的输入，encoder的输出是6个维度的feature。已经知道了本作encoder的功能就是对point cloud以及它的zip code生成点云特征。decoder的任务就是通encoder得到的特征重建出点云。这里直接引用udf原文对于encoder和decoder的输入输出描述：</p>
+<blockquote>
+<p>Encoder: The input is voxelized and encoded by a 3D CNN as a multi-scale grid of deep features.<br>    Decoder: The task of the decoder is to predict the unsigned distance function (UDF) for points to the ground truth surface<br>对于之前没有理解的多feature处理方法，作者在这里是简单地使用torch.cat:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">features = torch.cat((feature_0, feature_1, feature_2, feature_3, feature_4, feature_5, feature_6)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="2-3-模型训练"><a href="#2-3-模型训练" class="headerlink" title="2.3 模型训练"></a>2.3 模型训练</h3><p>代码中比较核心的部分，<code>training.py</code>中，介绍了训练的方法。主要看compute_loss函数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p = batch.get(<span class="string">&#x27;grid_coords&#x27;</span>).to(device)</span><br><span class="line">df_gt = batch.get(<span class="string">&#x27;df&#x27;</span>).to(device) <span class="comment">#(Batch,num_points)</span></span><br><span class="line">inputs = batch.get(<span class="string">&#x27;inputs&#x27;</span>).to(device)</span><br><span class="line">df_pred = self.model(p,inputs) <span class="comment">#(Batch,num_points)</span></span><br></pre></td></tr></table></figure><br>可以看到，送进去训练的是采样点p和体素化后的surface。在模型中，首先将voxelized surface $S$<code>input</code>送到encoder中，得到6个维度的feature。得到了feature以后，与sampled points $p$ <code>p</code>一同给到decoder中，通过公式$UDF(p,S) = min_{q\in S}||p-q||$求出预测的nueral unsigned distance field值。预测出的值，与udf的真值求loss损失函数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_pred = self.model(p,inputs) <span class="comment">#(Batch,num_points)</span></span><br><span class="line">loss_i = torch.nn.L1Loss(reduction=<span class="string">&#x27;none&#x27;</span>)(torch.clamp(df_pred, <span class="built_in">max</span>=self.max_dist),torch.clamp(df_gt, <span class="built_in">max</span>=self.max_dist))<span class="comment"># out = (B,num_points)</span></span><br></pre></td></tr></table></figure></p>
+<p>本部分的数据训练方法以及数据集中各个标签的使用：<br>对于encoder，输入通过preprocess计算出的occupancy（在代码中被标记为<code>input</code>）得到点云的feature。在得到了点云的feature 之后，将这一系列的点云特征（一共七个特征）输入到decoder中。在decoder中，通过feature和点云（被标记为<code>grid_coords</code>）求得最后的ndf值。<br>在得到了模型预测的ndf值后，与数据集中的<code>df</code>，ndf的真实值进行比较，然后真值和预测值的差异求出损失差值，对模型的计算进行反馈。</p>
+<p>写到这里，感觉整个代码框架已经基本摸清了，我的下一部分工作就是把NDF和FMR框架进行整合。</p>
+
+    </article>
+    <!-- license -->
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2022/03/28/MBPfix/" title="MacBook Pro 2019维修全过程记录">
+                    <div class="nextTitle">MacBook Pro 2019维修全过程记录</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/02/21/Feature-metrics%20Registration%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="Feature-metrics Registration 解读">
+                    <div class="prevTitle">Feature-metrics Registration 解读</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+        new Valine({
+            el: '#comment',
+            notify:false,
+            verify:false,
+            appId: "rqg8nF0IPUhLEfImp7Bt6otS-gzGzoHsz",
+            appKey: "lMlsrNdpsnqO9tvxuu2oloUW",
+            placeholder: "请说",
+            path:window.location.pathname,
+            avatar:'mm'
+        });
+    </script>
+
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+        
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+
+
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:xslialee070@outlook.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/SiciliaLeco" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                    
+                    <img class="profile-qr" src="/assets/qr.jpeg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Neural-Unsigned-Distance-Field-%E8%A7%A3%E8%AF%BB"><span class="toc-number">1.</span> <span class="toc-text">Neural Unsigned Distance Field 解读</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-number">1.1.</span> <span class="toc-text">0. 基本思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BD%93%E7%B4%A0%E5%8C%96-voxelization"><span class="toc-number">1.2.</span> <span class="toc-text">1. 体素化 voxelization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-off%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.1 .off文件格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-dataprocessing"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2 &#x2F;dataprocessing</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">1.3.</span> <span class="toc-text">2. 模型训练</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.1 数据集使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.2 模型构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">1.3.3.</span> <span class="toc-text">2.3 模型训练</span></a></li></ol></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 13
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/28</span>
+            <a class="archive-post-title" href="/2022/03/28/MBPfix/">MacBook Pro 2019维修全过程记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/05</span>
+            <a class="archive-post-title" href="/2022/03/05/nudf/">Neural Unsigned Distance Field 解读</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/21</span>
+            <a class="archive-post-title" href="/2022/02/21/Feature-metrics%20Registration%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/">Feature-metrics Registration 解读</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/07</span>
+            <a class="archive-post-title" href="/2022/02/07/KMP%E7%AE%97%E6%B3%95/">KMP算法解读和实现</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/03</span>
+            <a class="archive-post-title" href="/2022/01/03/Correspondence-Free/">Correspondence-Free Point Cloud Registration  阅读笔记</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span>
+            <a class="archive-post-title" href="/2021/12/26/Torch,-CUDA%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E4%BB%A5%E5%8F%8A%E5%AE%9E%E9%AA%8C%E5%AE%A4%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/">Torch, CUDA版本匹配以及实验室服务器配置</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/21</span>
+            <a class="archive-post-title" href="/2021/12/21/Point-Cloud-Registration-md/">Deep Closes Point 阅读笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/15</span>
+            <a class="archive-post-title" href="/2021/12/15/Deep-Global-Registration/">Deep Global Registration 阅读笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span>
+            <a class="archive-post-title" href="/2021/11/02/%E4%BD%BF%E7%94%A8CMake-%E7%BC%96%E8%AF%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97%E5%87%BA%E7%8E%B0Fatal-Error/">使用CMake 编译深度学习模块出现Fatal Error</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span>
+            <a class="archive-post-title" href="/2021/11/01/MacOS%E4%B8%8B%E4%BD%BF%E7%94%A8XQuartz-%E8%BF%9E%E6%8E%A5Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2/">MacOS下使用XQuartz 连接Linux服务器的图形化界面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/28</span>
+            <a class="archive-post-title" href="/2021/01/28/Eye-Gaze-Estimation-md/">Eye Gaze Estimation</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/07</span>
+            <a class="archive-post-title" href="/2020/12/07/arc_notes/">2020秋季《计算机体系结构》笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span>
+            <a class="archive-post-title" href="/2020/11/01/network_notes/">2020秋季《计算机网络》笔记</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="Computer Graphics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Graphics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Vision">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Vision
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Research">
+                <span class="iconfont-archer">&#xe606;</span>
+                Research
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LeetCode">
+                <span class="iconfont-archer">&#xe606;</span>
+                LeetCode
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Algorithm">
+                <span class="iconfont-archer">&#xe606;</span>
+                Algorithm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Linux">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linux
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MacOS">
+                <span class="iconfont-archer">&#xe606;</span>
+                MacOS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="PyTorch">
+                <span class="iconfont-archer">&#xe606;</span>
+                PyTorch
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Architecture">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Architecture
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Networks">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Networks
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CMake">
+                <span class="iconfont-archer">&#xe606;</span>
+                CMake
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Literature Review">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Literature Review
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Notes">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Notes
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Solutions">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Solutions
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "http://example.com",
+        root: siteMetaRoot,
+        author: "Sicilia Lee (李颀琳）"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

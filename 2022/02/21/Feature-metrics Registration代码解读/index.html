@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Sicilia Lee (李颀琳）">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Sicilia Lee (李颀琳）">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="Feature-metrics Registration 解读算法简介FMR算法相比起ICP算法有两个创新之处，第一个是不需要对点云之间求出点与点之间的对应关系（correspondence）也不需要对数据进行标记就可以提取出特征。FMR算法中求特征的部分是无监督学习的。  FMR算法主要分为两个部分。第一个分支的作用是对于输入的点云生成指定的特征。作者要求这里生成的特征是对旋转敏感的。在FMR算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Feature-metrics Registration 解读">
+<meta property="og:url" content="http://example.com/2022/02/21/Feature-metrics%20Registration%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/index.html">
+<meta property="og:site_name" content="Sicilia Lee&#39;s blog">
+<meta property="og:description" content="Feature-metrics Registration 解读算法简介FMR算法相比起ICP算法有两个创新之处，第一个是不需要对点云之间求出点与点之间的对应关系（correspondence）也不需要对数据进行标记就可以提取出特征。FMR算法中求特征的部分是无监督学习的。  FMR算法主要分为两个部分。第一个分支的作用是对于输入的点云生成指定的特征。作者要求这里生成的特征是对旋转敏感的。在FMR算">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-21T03:32:26.000Z">
+<meta property="article:modified_time" content="2022-03-03T14:43:14.608Z">
+<meta property="article:author" content="Sicilia Lee (李颀琳）">
+<meta property="article:tag" content="Computer Graphics">
+<meta property="article:tag" content="Computer Vision">
+<meta name="twitter:card" content="summary">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.jpeg">
+    
+    <title>Feature-metrics Registration 解读 · Sicilia&#39;s Studio</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Sicilia Lee's blog" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>Sicilia's Studio</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Sicilia&#39;s Studio</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">Feature-metrics Registration 解读</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/bkgrd.png)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                Feature-metrics Registration 解读
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Graphics">Computer Graphics</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Vision">Computer Vision</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">1.5k</span>Reading time: <span class="post-count reading-time">6 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/02/21</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="Feature-metrics-Registration-解读"><a href="#Feature-metrics-Registration-解读" class="headerlink" title="Feature-metrics Registration 解读"></a>Feature-metrics Registration 解读</h1><h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><p>FMR算法相比起ICP算法有两个创新之处，第一个是不需要对点云之间求出点与点之间的对应关系（correspondence）也不需要对数据进行标记就可以提取出特征。FMR算法中求特征的部分是无监督学习的。 </p>
+<p>FMR算法主要分为两个部分。第一个分支的作用是对于输入的点云生成指定的特征。作者要求这里生成的特征是对旋转敏感的。在FMR算法中，由encoder来实现生成特征这一步骤。如何做无监督的学习呢？方法就是在encoder后面加上一个decoder。这个decoder会用生成的特征来还原一个点云。为了使encoder生成的点云更加正确，会用一个损失函数chamfer loss来计算生成的点云和原始点云的差异。从而反馈到encoder的参数中进行更新。这样encoder-decoder的架构，可以帮助整个算法得到比较准确的特征。 </p>
+<p>第二个分支需要用到IC算法。分支2要对两个输入的特征计算projection error，通过这个error来参与IC算法来求出当前三维空间变换参数的迭代方向。也就是说，以点云P和Q作为输入，用第一分支中的encoder求出他们的特征。此时有一个初始化的三维旋转参数，也就是我们最后要求的旋转、平移矩阵。我们通过计算P与RQ+T的差异值error，开始做IC算法，求出来RT参数的偏移量，并加到上面，得到新的RT值。这一部分的检验会用到geometric loss，是用来检测预测出来的姿态与真实值的差异的。 </p>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>ModelNet40数据格式：<br>由于读取了多个点云，假设数据集中的点云个数用<code>B</code>来表示。在训练中，<code>B</code>也是batch size。则输入数据的格式为：source点云<code>B x M x 3</code>,  target点云<code>B x N x 3</code>, transformation矩阵<code>B x 4 x 4</code>. 通过<code>/data/dataset.py</code>部分的代码读取了ModelNet40的数据，生成了对应的Source-Target-TransMatrix的数据集。从代码内容上看，点云之间的transformation似乎是通过他们的mesh关系等数据求解出来的，作者在<code>se_math</code>这个文件夹里面放了求解transformation的代码，待看。</p>
+<h2 id="1-Models-py-部分"><a href="#1-Models-py-部分" class="headerlink" title="1. Models.py 部分"></a>1. Models.py 部分</h2><ol>
+<li><p>Branch1：Encoder-Decoder建立<br>Encoder采用的是PointNet，其作用是对输入的点云做特征提取。输入：Points[B, N, 3]，输出：Features[B, K]. 其中，<code>K</code>是点云特征的维度，默认是1024。Encoder内部使用了两个<code>MLPNet</code>，<br>组成了Encoder-decoder机制以后，需要求解loss function，为了保证我们训练出来的Encoder是rotation attentive的，组合了source PC和target PC的loss结果一起反馈。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">decoder_out_f0 = self.decoder(f0)</span><br><span class="line">decoder_out_f1 = self.decoder(f1)</span><br><span class="line"></span><br><span class="line">p0_dist1, p0_dist2 = self.chamfer_loss(p0.contiguous(), decoder_out_f0)  <span class="comment"># loss function</span></span><br><span class="line">loss_net0 = (torch.mean(p0_dist1)) + (torch.mean(p0_dist2))</span><br><span class="line">p1_dist1, p1_dist2 = self.chamfer_loss(p1.contiguous(), decoder_out_f1)  <span class="comment"># loss function</span></span><br><span class="line">loss_net1 = (torch.mean(p1_dist1)) + (torch.mean(p1_dist2))</span><br><span class="line">loss_enco_deco = loss_net0 + loss_net1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Branch2：Transformation estimate<br>首先看到<code>estimate_T()</code>方法，其作用就是预处理输入的训练数据，这里的<code>g0</code>是根据输入的点云个数生成的旋转平移矩阵的initial value。在得到了这个初值以后，进入到<code>ic_algo()</code>的部分。这个函数虽然叫IC，但是他也是同时处理了branch 1和branch2的工作。branch1 的内容就是利用decoder的输出和原始的点云计算Chamfer Loss。这一部分的核心代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">p0_dist1, p0_dist2 = self.chamfer_loss(p0.contiguous(), decoder_out_f0)  <span class="comment"># loss function</span></span><br><span class="line">loss_net0 = (torch.mean(p0_dist1)) + (torch.mean(p0_dist2))</span><br><span class="line">p1_dist1, p1_dist2 = self.chamfer_loss(p1.contiguous(), decoder_out_f1)  <span class="comment"># loss function</span></span><br><span class="line">loss_net1 = (torch.mean(p1_dist1)) + (torch.mean(p1_dist2))</span><br><span class="line">loss_enco_deco = loss_net0 + loss_net1</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>完成了task1后，就进入了task2的内容，也就是核心的Inverse compositional 算法内容。在<code>SolveRegistration</code>的初始化部分，作者就初始化了一个dt 维度是<code>1x6</code>，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">delta = <span class="number">1.0e-2</span>  <span class="comment"># step size for approx. Jacobian (default: 1.0e-2)</span></span><br><span class="line">dt_initial = torch.autograd.Variable(torch.Tensor([delta, delta, delta, delta, delta, delta]))</span><br><span class="line">self.dt = torch.nn.Parameter(dt_initial.view(<span class="number">1</span>, <span class="number">6</span>), requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure><br>从论文中可以得知，Task 2 将RT平移旋转矩阵转换成了$\theta = (v_1, v_2, v_3, t_1, t_2, t_3)$ ，而task 2 的重点内容就是求解出$\Delta \theta$. 求解的核心部分代码如下，对于每一句代码后注解了我的相关解释：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># task 2</span></span><br><span class="line">f0 = self.encoder(p0)  <span class="comment"># [B, N, 3] -&gt; [B, K]</span></span><br><span class="line"><span class="comment"># approx. J by finite difference</span></span><br><span class="line">dt = self.dt.to(p0).expand(batch_size, <span class="number">6</span>)  <span class="comment"># convert to the type of p0. [B, 6] #预备delta t，也就是变换量</span></span><br><span class="line">J = self.approx_Jac(p0, f0, dt)</span><br><span class="line"><span class="comment"># compute pinv(J) to solve J*x = -r</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    Jt = J.transpose(<span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># [B, 6, K] J^T</span></span><br><span class="line">    H = Jt.bmm(J)  <span class="comment"># [B, 6, 6] J^T \cdot J</span></span><br><span class="line">    <span class="comment"># H = H + u_lamda * iDentity</span></span><br><span class="line">    B = self.inverse(H) <span class="comment"># (J^T \cdot J) -1</span></span><br><span class="line">    pinv = B.bmm(Jt)  <span class="comment"># [B, 6, K]</span></span><br></pre></td></tr></table></figure><br>注意到这里有一个调用approx_Jac的部分，是对应了论文里求解雅各布矩阵的流程。如下，标注了代码运行结果矩阵的尺寸，这里要注意的是，变成B x 6 x 4 x 4 是为了方便矩阵运算（为了满足矩阵做加减乘除运算而设定的）最后的输出返回结果是B x K x 6尺寸的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">approx_Jac</span>(<span class="params">self, p0, f0, dt</span>):</span></span><br><span class="line">        <span class="comment"># p0: [B, N, 3], Variable</span></span><br><span class="line">        <span class="comment"># f0: [B, K], corresponding feature vector</span></span><br><span class="line">        <span class="comment"># dt: [B, 6], Variable</span></span><br><span class="line">        <span class="comment"># Jk = (ptnet(p(-delta[k], p0)) - f0) / delta[k]</span></span><br><span class="line">        batch_size = p0.size(<span class="number">0</span>)</span><br><span class="line">        num_points = p0.size(<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># compute transforms</span></span><br><span class="line">        transf = torch.zeros(batch_size, <span class="number">6</span>, <span class="number">4</span>, <span class="number">4</span>).to(p0)</span><br><span class="line">        <span class="comment">#for b in range(p0.size(0)):</span></span><br><span class="line">        <span class="keyword">for</span> b <span class="keyword">in</span> <span class="built_in">range</span>(batch_size): <span class="comment">#把这个batch中的每一个点云的transf都算出来，并且转换成6x4x4的形式</span></span><br><span class="line">            d = torch.diag(dt[b, :])  <span class="comment"># [6, 6]</span></span><br><span class="line">            D = self.exp(-d)  <span class="comment"># [6, 4, 4]</span></span><br><span class="line">            transf[b, :, :, :] = D[:, :, :]</span><br><span class="line">        transf = transf.unsqueeze(<span class="number">2</span>).contiguous()  <span class="comment"># [B, 6, 4, 4] 展开成 [B, 6, 1, 4, 4]</span></span><br><span class="line">        p = self.transform(transf, p0.unsqueeze(<span class="number">1</span>))  <span class="comment"># x [B, 1, N, 3] -&gt; [B, 6, N, 3]</span></span><br><span class="line"></span><br><span class="line">        f0 = f0.unsqueeze(-<span class="number">1</span>)  <span class="comment"># [B, K, 1]</span></span><br><span class="line">        f1 = self.encoder(p.view(-<span class="number">1</span>, num_points, <span class="number">3</span>)) <span class="comment"># 这里的num_points 是以p0（source为主的）B x N x 3 &gt; B x K</span></span><br><span class="line">        f = f1.view(batch_size, <span class="number">6</span>, -<span class="number">1</span>).transpose(<span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># [B, K, 6]</span></span><br><span class="line">        df = f0 - f  <span class="comment"># [B, K, 6]</span></span><br><span class="line">        J = df / dt.unsqueeze(<span class="number">1</span>)  <span class="comment"># [B, K, 6]</span></span><br><span class="line">        <span class="keyword">return</span> J</span><br></pre></td></tr></table></figure></p>
+
+    </article>
+    <!-- license -->
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2022/03/05/nudf/" title="Neural Unsigned Distance Field 解读">
+                    <div class="nextTitle">Neural Unsigned Distance Field 解读</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/02/07/KMP%E7%AE%97%E6%B3%95/" title="KMP算法解读和实现">
+                    <div class="prevTitle">KMP算法解读和实现</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+        new Valine({
+            el: '#comment',
+            notify:false,
+            verify:false,
+            appId: "rqg8nF0IPUhLEfImp7Bt6otS-gzGzoHsz",
+            appKey: "lMlsrNdpsnqO9tvxuu2oloUW",
+            placeholder: "请说",
+            path:window.location.pathname,
+            avatar:'mm'
+        });
+    </script>
+
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+        
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+
+
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:xslialee070@outlook.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/SiciliaLeco" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                    
+                    <img class="profile-qr" src="/assets/qr.jpeg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Feature-metrics-Registration-%E8%A7%A3%E8%AF%BB"><span class="toc-number">1.</span> <span class="toc-text">Feature-metrics Registration 解读</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">算法简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">1.2.</span> <span class="toc-text">数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Models-py-%E9%83%A8%E5%88%86"><span class="toc-number">1.3.</span> <span class="toc-text">1. Models.py 部分</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 13
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/28</span>
+            <a class="archive-post-title" href="/2022/03/28/MBPfix/">MacBook Pro 2019维修全过程记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/05</span>
+            <a class="archive-post-title" href="/2022/03/05/nudf/">Neural Unsigned Distance Field 解读</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/21</span>
+            <a class="archive-post-title" href="/2022/02/21/Feature-metrics%20Registration%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/">Feature-metrics Registration 解读</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/07</span>
+            <a class="archive-post-title" href="/2022/02/07/KMP%E7%AE%97%E6%B3%95/">KMP算法解读和实现</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/03</span>
+            <a class="archive-post-title" href="/2022/01/03/Correspondence-Free/">Correspondence-Free Point Cloud Registration  阅读笔记</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span>
+            <a class="archive-post-title" href="/2021/12/26/Torch,-CUDA%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E4%BB%A5%E5%8F%8A%E5%AE%9E%E9%AA%8C%E5%AE%A4%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/">Torch, CUDA版本匹配以及实验室服务器配置</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/21</span>
+            <a class="archive-post-title" href="/2021/12/21/Point-Cloud-Registration-md/">Deep Closes Point 阅读笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/15</span>
+            <a class="archive-post-title" href="/2021/12/15/Deep-Global-Registration/">Deep Global Registration 阅读笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span>
+            <a class="archive-post-title" href="/2021/11/02/%E4%BD%BF%E7%94%A8CMake-%E7%BC%96%E8%AF%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97%E5%87%BA%E7%8E%B0Fatal-Error/">使用CMake 编译深度学习模块出现Fatal Error</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span>
+            <a class="archive-post-title" href="/2021/11/01/MacOS%E4%B8%8B%E4%BD%BF%E7%94%A8XQuartz-%E8%BF%9E%E6%8E%A5Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2/">MacOS下使用XQuartz 连接Linux服务器的图形化界面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/28</span>
+            <a class="archive-post-title" href="/2021/01/28/Eye-Gaze-Estimation-md/">Eye Gaze Estimation</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/07</span>
+            <a class="archive-post-title" href="/2020/12/07/arc_notes/">2020秋季《计算机体系结构》笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span>
+            <a class="archive-post-title" href="/2020/11/01/network_notes/">2020秋季《计算机网络》笔记</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="Computer Graphics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Graphics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Vision">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Vision
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Research">
+                <span class="iconfont-archer">&#xe606;</span>
+                Research
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LeetCode">
+                <span class="iconfont-archer">&#xe606;</span>
+                LeetCode
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Algorithm">
+                <span class="iconfont-archer">&#xe606;</span>
+                Algorithm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Linux">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linux
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MacOS">
+                <span class="iconfont-archer">&#xe606;</span>
+                MacOS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="PyTorch">
+                <span class="iconfont-archer">&#xe606;</span>
+                PyTorch
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Architecture">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Architecture
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Networks">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Networks
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CMake">
+                <span class="iconfont-archer">&#xe606;</span>
+                CMake
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Literature Review">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Literature Review
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Notes">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Notes
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Solutions">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Solutions
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "http://example.com",
+        root: siteMetaRoot,
+        author: "Sicilia Lee (李颀琳）"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

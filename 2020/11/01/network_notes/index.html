@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Sicilia Lee (李颀琳）">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Sicilia Lee (李颀琳）">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="第一章 概述1.1 网络概念及分类1.1.1 常用概念 计算机网络：一组互联自治的计算机集合。连接介质：光纤、铜线、微波、红外、卫星等。 互联网络：计算机网络的相连 拓扑：信道的分布方式 协议：一系列规则和规定的规范性描述，控制了两个或者多个对等实体之间的通信。 协议三要素：语义、语法、同步   接口：同一节点内相邻两层之间交换信息的连接点（不可以跨层次定义） 服务：服务是下层被上层体用的功能调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020秋季《计算机网络》笔记">
+<meta property="og:url" content="http://example.com/2020/11/01/network_notes/index.html">
+<meta property="og:site_name" content="Sicilia Lee&#39;s blog">
+<meta property="og:description" content="第一章 概述1.1 网络概念及分类1.1.1 常用概念 计算机网络：一组互联自治的计算机集合。连接介质：光纤、铜线、微波、红外、卫星等。 互联网络：计算机网络的相连 拓扑：信道的分布方式 协议：一系列规则和规定的规范性描述，控制了两个或者多个对等实体之间的通信。 协议三要素：语义、语法、同步   接口：同一节点内相邻两层之间交换信息的连接点（不可以跨层次定义） 服务：服务是下层被上层体用的功能调用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/1.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/2.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/3.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/4.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/5.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/6.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/7.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/8.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/9.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/10.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/11.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/12.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/13.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/14.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/15.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/16.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/17.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/18.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/19.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/20.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/21.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/22.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/23.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/24.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/25.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/26.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/27.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/28.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/29.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/30.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/31.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/32.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/33.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/34.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/35.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/36.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/37.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/38.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/39.png">
+<meta property="og:image" content="http://example.com/2020/11/01/network_notes/40.png">
+<meta property="og:image" content="http://example.com/Users/liqilin/Library/Application%20Support/typora-user-images/image-20201223143309956.png">
+<meta property="article:published_time" content="2020-11-01T03:32:26.000Z">
+<meta property="article:modified_time" content="2021-12-29T07:35:54.491Z">
+<meta property="article:author" content="Sicilia Lee (李颀琳）">
+<meta property="article:tag" content="Computer Networks">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/11/01/network_notes/1.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.jpeg">
+    
+    <title>2020秋季《计算机网络》笔记 · Sicilia&#39;s Studio</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Sicilia Lee's blog" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>Sicilia's Studio</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Sicilia&#39;s Studio</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">2020秋季《计算机网络》笔记</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/bkgrd.png)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                2020秋季《计算机网络》笔记
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Networks">Computer Networks</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">11.1k</span>Reading time: <span class="post-count reading-time">39 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2020/11/01</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="第一章-概述"><a href="#第一章-概述" class="headerlink" title="第一章 概述"></a>第一章 概述</h3><h4 id="1-1-网络概念及分类"><a href="#1-1-网络概念及分类" class="headerlink" title="1.1 网络概念及分类"></a>1.1 网络概念及分类</h4><h5 id="1-1-1-常用概念"><a href="#1-1-1-常用概念" class="headerlink" title="1.1.1 常用概念"></a>1.1.1 常用概念</h5><ul>
+<li><strong>计算机网络：</strong>一组互联自治的计算机集合。连接介质：光纤、铜线、微波、红外、卫星等。</li>
+<li><strong>互联网络</strong>：计算机网络的相连</li>
+<li><strong>拓扑</strong>：信道的分布方式</li>
+<li><strong>协议</strong>：一系列规则和规定的规范性描述，控制了两个或者多个对等实体之间的通信。<ul>
+<li>协议三要素：语义、语法、同步</li>
+</ul>
+</li>
+<li><strong>接口</strong>：同一节点内相邻两层之间交换信息的连接点（不可以跨层次定义）</li>
+<li><strong>服务</strong>：服务是下层被上层体用的功能调用</li>
+</ul>
+<p>==服务是垂直的，协议是水平的==</p>
+<h5 id="1-1-2-计算机网络的分类"><a href="#1-1-2-计算机网络的分类" class="headerlink" title="1.1.2 计算机网络的分类"></a>1.1.2 计算机网络的分类</h5><p>1、按照分布范围分类：广域网WAN、城域网MAN、局域网LAN、个人网PAN。</p>
+<p><em>1m之内不称为计算机网络，叫处理器系统！</em></p>
+<p>2、按照传输技术分类：广播式网络（共享一个通信信道）、点对点网络（一条物理线路连接一对计算机）。</p>
+<p><em>局域网基本上采用的是广播式通信技术，广域网中的无线、卫星也是广播。</em></p>
+<p>3、按照拓扑结构分类：总线形、星形、环形、网状形。</p>
+<p><img src="/2020/11/01/network_notes/1.png" alt="pic1" style="zoom:33%;"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>网络类型</th>
+<th>方案</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>总线型</td>
+<td></td>
+<td>简单、方便、节约</td>
+<td>重负载时通讯效率低、对故障敏感</td>
+</tr>
+<tr>
+<td>星形</td>
+<td></td>
+<td>便于集中管理</td>
+<td>成本高、中心节点对故障敏感</td>
+</tr>
+<tr>
+<td>环形</td>
+<td>（比如令牌环网）</td>
+<td>电缆长度短、适用于光纤</td>
+<td>节点故障引起全网故障、监测困难、负载轻时利用率低</td>
+</tr>
+<tr>
+<td>网状</td>
+<td></td>
+<td>可靠性高</td>
+<td>控制复杂、线路成本高</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>4、按照使用者分类：公用网、专用网</p>
+<p>5、按照交换技术分类：</p>
+<ul>
+<li><p>电路交换网络 circuit switching</p>
+<p>过程：建立连接-&gt;传输数据-&gt;释放连接 ，期间无论是否说话（传输信息）都占用了信道，连线效率低。</p>
+</li>
+<li><p>报文交换网络 message switching</p>
+<p>pros：不需要建立连接，存储、转发机制有优势，并且不占用其他的信道</p>
+<p>cons：报文的大小无法预知，存储跟不上数据的增大，且存储转换机制下可能有错</p>
+</li>
+<li><p>分组交换网络 packet switching</p>
+<p>==存储-转发机制==~ 我理解的packet就是pipeline版的报文交换，因为它把数据分成了更小的部分。</p>
+</li>
+</ul>
+<p><em>存储转发（Store and Forward）是计算机网络领域使用得最为广泛的技术之一，以太网交换机的控制器先将输入端口到来的数据包缓存起来，先检查数据包是否正确，并过滤掉冲突包错误。确定包正确后，取出目的地址，通过查找表找到想要发送的输出端口地址，然后将该包发送出去。</em></p>
+<p><em>ref: 《王道考研》p4</em></p>
+<h4 id="1-2-协议分层基本概念"><a href="#1-2-协议分层基本概念" class="headerlink" title="1.2 协议分层基本概念"></a>1.2 协议分层基本概念</h4><h5 id="1-2-1-分层的基本原则"><a href="#1-2-1-分层的基本原则" class="headerlink" title="1.2.1 分层的基本原则"></a>1.2.1 分层的基本原则</h5><ol>
+<li>每层都实现一种相对独立的功能，降低大系统的复杂度。</li>
+<li>个层之间界面自然清晰、易于理解，相互交流尽可能少。</li>
+<li>各层功能的精确定义独立于具体的实现方法，可以采用最合适的技术来实现。</li>
+<li>保持下层对上层的独立性，上层单项用下层提供的服务。</li>
+<li>整个分层结构促进标准化工作。</li>
+</ol>
+<h5 id="1-2-2-分层的概念"><a href="#1-2-2-分层的概念" class="headerlink" title="1.2.2 分层的概念"></a>1.2.2 分层的概念</h5><p>分层概念的基础是“模块”的概念。一个模块可以是一个过程或一台设备，它完成一个特定的功能；若干个模块组成一个完整的系统功能。模块提供的功能通常称之为“服务”。</p>
+<blockquote>
+<p>采用模块概念的好处是：设计简单、可懂性好、标准化、互换性好，有大量的现存的模块可以利用。<br>模块可以通过<strong>嵌套</strong>组成更大的模块。一个高层的模块由低层模块加上一些简单模块组成。</p>
+</blockquote>
+<p><img src="/2020/11/01/network_notes/2.png" alt="image-20201219205646087" style="zoom:40%;"></p>
+<h4 id="1-3-ISO-OSI-RM"><a href="#1-3-ISO-OSI-RM" class="headerlink" title="1.3 ISO OSI/RM"></a>1.3 ISO OSI/RM</h4><p><img src="/2020/11/01/network_notes/3.png" alt="image-20201221194237821" style="zoom:50%;"></p>
+<ul>
+<li>物理层：传输比特，传输==透明==的比特流。<ul>
+<li>机械尺寸</li>
+<li>电气特性（引脚）直流电：范围内高电平</li>
+<li>功能特性</li>
+<li>规程特性（时序）</li>
+</ul>
+</li>
+<li>数据链路层：传输帧，将网络层得到的数据组装成帧，成帧、差错控制、流量控制和传输管理。<ul>
+<li>PTP点对点，可以实现可靠传输</li>
+<li>计时器：发送后的事件，如果超时就重传</li>
+</ul>
+</li>
+<li>网络层：传输数据报，选路（进行路由）以及拥塞控制</li>
+<li>传输层：传输单位是报文段TCP或用户数据报UDP，提供端到端之间的可靠传输</li>
+<li>会话层：允许不同主机的各个进程之间进行会话，记录了网络上数据传输的进度<ul>
+<li>“网络蚂蚁”——可以让断点继续传</li>
+</ul>
+</li>
+<li>表示层：处理在两个通信系统内信息的表示方式，处理大小端的问题<ul>
+<li>加密、解密、数据压缩解压</li>
+</ul>
+</li>
+<li>应用层：用户与网络的界面没提供访问手段（文件传输）<ul>
+<li>FTP、SMTP、HTTP</li>
+</ul>
+</li>
+</ul>
+<p><em>注：从会话层开始，传输的内容都是message报文</em></p>
+<h4 id="1-4-TCP-IP-RM"><a href="#1-4-TCP-IP-RM" class="headerlink" title="1.4 TCP/IP/RM"></a>1.4 TCP/IP/RM</h4><p><img src="/2020/11/01/network_notes/4.png" alt="image-20201221200043844" style="zoom:40%;"></p>
+<ul>
+<li>数据链路层：<ul>
+<li>作用：(1) 实现网卡接口的网络驱动，以处理数据在以太网线等物理媒介上的传输<br>            (2) 网络驱动程序隐藏了不同物理网络的不同电气特性，为上层协议提供一个统一的接口 </li>
+<li>协议：ARP、RARP</li>
+</ul>
+</li>
+<li>网络层：<ul>
+<li>作用：选路、做拥塞控制、对上层协议隐藏了网络拓扑连接的细节</li>
+<li>协议：RIP、OSPF、IP、ICMP、PGP、ARP</li>
+</ul>
+</li>
+<li>传输层：<ul>
+<li>作用：为应用程序隐藏了数据包跳转的细节，负责数据包的收发、链路超时重连</li>
+<li>协议：TCP、UDP</li>
+</ul>
+</li>
+<li>应用层：<ul>
+<li>作用：为操作系统或网络应用程序提供访问网络服务的接口</li>
+<li>协议：telnet、HTTP、FTP、SMTP</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-5-传输时延，传播时延"><a href="#1-5-传输时延，传播时延" class="headerlink" title="1.5 传输时延，传播时延"></a>1.5 传输时延，传播时延</h4><p><strong>1、一些术语</strong></p>
+<p>比特率：每秒传送的比特数。单位为bps（bit per second）也可表示为b/s</p>
+<p>波特率：波特率表示每秒钟传送的码元符号的个数</p>
+<p>码元：一个码元就是一个脉冲信号，波特率指的就是1秒能发送多少个码元，也就是1秒能发送多少个脉冲信号</p>
+<p>带宽：带宽一词最初指的是电磁波频带的宽度，也就是==信号的最高频率与最低频率的差值==。目前，它被更广泛地借用在数字通信中，用来描述网络或线路理论上传输数据的最高速率。</p>
+<p><em>我记得有一个带宽计算的练习题，晚上找一下！</em></p>
+<p><strong>2、发送时延</strong></p>
+<p>发送时延是主机或路由器发送数据帧所需要的时间，也就是从发送数据的第一个比特算起，到该帧的最后一个比特发送完毕所需的时间。发送时延发生在机器内部的发送器中（一般是网络适配器），与传输信道的长度无关。</p>
+<script type="math/tex; mode=display">
+发送时延 = 数据帧长度（b） / 信道带宽（b/s）</script><p><strong>3、传播时延</strong></p>
+<p>传播时延是电磁波在信道中传播一定的距离需要花费的时间。</p>
+<script type="math/tex; mode=display">
+传播时延 = 信道长度（m） / 电磁波在信道上的传播速率（m/s）</script><h3 id="第二章-物理层"><a href="#第二章-物理层" class="headerlink" title="第二章 物理层"></a>第二章 物理层</h3><p>主要功能：提供透明的比特流传输——“0、1”形式传递，不关心信息，只关注流本身</p>
+<h4 id="2-1-四个特性"><a href="#2-1-四个特性" class="headerlink" title="2.1 四个特性"></a>2.1 四个特性</h4><p><strong>1、机械特性：</strong>指明接口的所有接线器形状、尺寸、引脚、排列等。</p>
+<p><strong>2、电气特性：</strong>接口电缆各线的电压范围</p>
+<p><strong>3、功能特性：</strong>某一个电平的意义</p>
+<p><strong>4、规程特性：</strong>不同功能的各种可能事件出现顺序</p>
+<h4 id="2-2-奈奎斯特定理、香农"><a href="#2-2-奈奎斯特定理、香农" class="headerlink" title="2.2 奈奎斯特定理、香农"></a>2.2 奈奎斯特定理、香农</h4><p><strong>奈奎斯特定理：</strong>在理想的==低通、无噪声、带宽有限==的信道中，极限码元传输率为2W波特。W是带宽（Hz），V是每个码元的离散的电平数目</p>
+<script type="math/tex; mode=display">
+理想低通道下的极限数据传输率=2Wlog_2V\ \ (b/s)</script><p>奈定理限制了码元的传输速率，但是没有限制信息传输速率。</p>
+<p><strong>香农定理：</strong>在==带宽受限且有高斯白噪声干扰==的情况下信道的极限数据传输率。可以不产生误差。</p>
+<script type="math/tex; mode=display">
+信道的极限数据传输率=Wlog_2(1+S/N) \ (b/s)</script><p>S为信道传输信号的平均功率，N为高斯噪声功率。</p>
+<h4 id="2-3-信道复用技术"><a href="#2-3-信道复用技术" class="headerlink" title="2.3 信道复用技术"></a>2.3 信道复用技术</h4><p>复用：一个物理线路同时传输多路的用户信号。（干线上的技术）</p>
+<p><img src="/2020/11/01/network_notes/5.png" alt="image-20201221210432984" style="zoom:45%;"></p>
+<center style="color:#C0C0C0;text-decoration:underline">频分复用示意图</center>
+
+<p><strong>1、频分复用FDM：</strong>所有的用户在同样的时间里有不同的带宽。</p>
+<blockquote>
+<p>频分复用要求总频率宽度大于各个子信道频率之和，同时为了保证各子信道中所传输的信号互不干扰，应在各子信道之间设立隔离带，这样就保证了各路信号互不干扰</p>
+</blockquote>
+<p><strong>2、时分复用TDM：</strong>将时间划分成一段段的帧，每一个时分复用的用户在每一个帧占有特定的间隙（使用时间！=相等的时间片）==电话系统、蜂窝系统==</p>
+<p>注意：STDM（统计时复用技术）是动态分配的</p>
+<p><img src="/2020/11/01/network_notes/6.png" alt="image-20201221211024566" style="zoom:50%;"></p>
+<center style="color:#C0C0C0;text-decoration:underline">时分复用</center>
+
+<p><strong>3、波分复用WDM：</strong>在一根光纤上复用两路光在波信号</p>
+<p><strong>4、码分复用CDM：</strong>又叫CDMA（不是第二章的collision detect！）每个用户在同样的事件使用同种频带。各用户挑选的不同的码型，用户之间就不发生干扰。==抗干扰强==</p>
+<p><img src="/2020/11/01/network_notes/7.png" alt="image-20201221211847945" style="zoom:45%;"></p>
+<center style="color:#C0C0C0;text-decoration:underline">CDMA</center>
+
+<h4 id="2-4-曼彻斯特编码与差分曼彻斯特"><a href="#2-4-曼彻斯特编码与差分曼彻斯特" class="headerlink" title="2.4 曼彻斯特编码与差分曼彻斯特"></a>2.4 曼彻斯特编码与差分曼彻斯特</h4><p><img src="/2020/11/01/network_notes/8.png" alt="image-20201221212706085" style="zoom:40%;"></p>
+<center style="color:#C0C0C0;text-decoration:underline">曼彻斯特编码</center>
+
+<p><strong>曼彻斯特编码</strong>：每一位的==中间==有一跳变，位中间的跳变既作时钟信号，又作数据信号；从高到低跳变表示”1”，从低到高跳变表示”0”。</p>
+<p><strong>差分曼彻斯特：</strong>还有一种是差分曼彻斯特编码，每位中间的跳变仅提供时钟定时，而用每位开始时有无跳变表示”0”或”1”，有跳变为”0”，无跳变为”1”。</p>
+<p>？ppt这个图是错了吗</p>
+<p>占空比都是50%</p>
+<h4 id="2-5-码分计算"><a href="#2-5-码分计算" class="headerlink" title="2.5 码分计算"></a>2.5 码分计算</h4><p>==应该是CDMA==</p>
+<h4 id="2-6-传输介质"><a href="#2-6-传输介质" class="headerlink" title="2.6 传输介质"></a>2.6 传输介质</h4><p>1、 双绞线：铜导线并排放在一起再绞合。</p>
+<p>屏蔽双绞线STP（外面加一个用金属丝编织成的屏蔽层）/ 非屏蔽双绞线UTP</p>
+<p>2、同轴电缆</p>
+<p>3、光纤</p>
+<p>4、无线传输介质</p>
+<h3 id="第三章：数据链路层"><a href="#第三章：数据链路层" class="headerlink" title="第三章：数据链路层"></a>第三章：数据链路层</h3><blockquote>
+<p>考纲：数据链路层，零比特插入，CRC，停止等待协议，滑动窗口，连续AQR，go back n，选择重传ARQ，HDLC，PPP</p>
+</blockquote>
+<p>实现点对点可靠传输</p>
+<p>以太网：无确认的无连接服务</p>
+<p>802.11（WIFI）：有确认的无连接服务（没有使用逻辑连接，但是每一帧都要确认）</p>
+<h4 id="3-1-数据链路层"><a href="#3-1-数据链路层" class="headerlink" title="3.1 数据链路层"></a>3.1 数据链路层</h4><h5 id="3-1-2-成帧"><a href="#3-1-2-成帧" class="headerlink" title="3.1.2 成帧"></a>3.1.2 成帧</h5><p>数据链路层需要进行检测错误和修正错误（如果有必要）——一般其实都是重传机制。</p>
+<blockquote>
+<p>透明传输：指不管所传数据是什么样的比特组合，都应当能够在链路上传送。</p>
+<p>但是如果使用了帧定界（SOH、EOT）就可能导致错误。因此需要解决！解决方案就是下面的字节填充和比特插入。</p>
+</blockquote>
+<p><strong>字节填充：</strong>每个标志字节前面插入特殊的转义字符ESC，只要标志字节前面没有转义字符，就可以作为帧的分界标识。当然，在传给网络层之前，ESC要被删掉。——是PPP协议的内容</p>
+<p><img src="/2020/11/01/network_notes/9.png" alt="image-20201222005022714" style="zoom:40%;"></p>
+<center style="color:#C0C0C0;text-decoration:underline">字节填充技术</center>
+
+<p><strong>0比特填充：</strong>每个帧的开头用<code>0x7E</code>或者<code>01111110</code>表示，每当==在数据中==碰到了连续的5个1，就自动在输出比特流填一个0.——是HDLC协议的内容</p>
+<p><em>note：这样可以确保如果接收方收到了帧，里面出现了6个1，那么一定只有可能是帧的开头而不会是数据。当然，接收方在处理的时候也要记得把5个1后面的0去掉以免影响拆帧</em></p>
+<h5 id="3-1-3-差错控制"><a href="#3-1-3-差错控制" class="headerlink" title="3.1.3 差错控制"></a>3.1.3 差错控制</h5><p>特殊的控制帧：对接收的帧进行肯定或者否定的确认。</p>
+<p>计时器：发出帧以后启动。如果长时间没有收到确认帧，认为失败，重传。（需要有编序号区别）</p>
+<h5 id="3-1-4-流量控制"><a href="#3-1-4-流量控制" class="headerlink" title="3.1.4 流量控制"></a>3.1.4 流量控制</h5><p>基于反馈；基于速率。</p>
+<h4 id="3-2-差错检测和纠正"><a href="#3-2-差错检测和纠正" class="headerlink" title="3.2 差错检测和纠正"></a>3.2 差错检测和纠正</h4><p>对于$m$个消息位和$r$个校验位，给出校验位数的下界：</p>
+<script type="math/tex; mode=display">
+(m+r+1)\le 2^r</script><p><strong>奇偶校验</strong>：</p>
+<p><strong>奇校验：</strong> 如果给定一组数据位中 1 的个数是偶数，那么奇校验位就置为 1，使得总的 1 的个数保持奇数不变。</p>
+<p><strong>CRC：</strong></p>
+<p>对于数据M（k位），向左边移动n位，去除以P得到商Q和余数R，余数R就作为检错码，发送时候就发{M, R}.注意，对于P的选用，是看<strong>生成多项式</strong>。例如，$P(X)=X^3+X^2+1$表示为1101.</p>
+<script type="math/tex; mode=display">
+2^nM\div P=Q...R</script><p>在检查的时候，对传送过来的数据{M, R}除以P，看余数是不是0，如果是，那么检测就是对的。</p>
+<p>CRC-32一般用于LANs。</p>
+<h4 id="3-3-停止等待协议"><a href="#3-3-停止等待协议" class="headerlink" title="3.3 停止等待协议"></a>3.3 停止等待协议</h4><p>物理层进程和某些数据链路层进程运行在一个网络接口卡（NIC）上。</p>
+<p>stop-and-wait：由于出现丢包（传输的数据包丢失，在数据链路层，就是帧的缺失问题）发送一帧，等待对方确认到达后才能继续发送。</p>
+<p>==简单但是信道利用率低==</p>
+<p><img src="/2020/11/01/network_notes/10.png" alt="image-20201222101209816" style="zoom:50%;"></p>
+<p>差错情况：</p>
+<p><strong>1、检测到帧出错</strong></p>
+<p>RTT：往返传播时延，超时计时器设置的重传时间比帧传输平均RTT长。</p>
+<p><img src="/2020/11/01/network_notes/11.png" alt="image-20201222100655211" style="zoom:50%;"></p>
+<ul>
+<li>发送完一个帧以后保留副本直到收到ACK。</li>
+<li>数据帧和确认帧需要编号。</li>
+</ul>
+<p><strong>2、确认帧丢失</strong></p>
+<p><img src="/2020/11/01/network_notes/12.png" alt="image-20201222100915744" style="zoom:50%;"></p>
+<p><strong>3、ACK迟到</strong></p>
+<p><img src="/2020/11/01/network_notes/13.png" alt="image-20201222101008414" style="zoom:50%;"></p>
+<p>ARQ：自动重复请求。发送方在准备下一个数据项目之前先等待一个肯定的确认。传统自动重传请求分成为三种，即停等式(stop-and-wait）ARQ，回退n帧（go-back-n）ARQ，以及选择性重传（selective repeat）ARQ。后两种协议是滑动窗口技术与请求重发技术的结合，由于窗口尺寸开到足够大时，帧在线路上可以连续地流动，因此又称其为连续ARQ协议。三者的区别在于对于出错的数据报文的处理机制不同。三种ARQ协议中，复杂性递增，效率也递增。</p>
+<h4 id="3-4-滑动窗口协议"><a href="#3-4-滑动窗口协议" class="headerlink" title="3.4 滑动窗口协议"></a>3.4 滑动窗口协议</h4><h5 id="3-4-1-GO-BACK-N"><a href="#3-4-1-GO-BACK-N" class="headerlink" title="3.4.1 GO BACK N"></a>3.4.1 GO BACK N</h5><p>发送方必响应的三件事：</p>
+<ol>
+<li>上层的调用；</li>
+<li>收到ACK；——采用了<strong>累计确认</strong>的方式，表明已经接受到第N个帧以及其前面所有的</li>
+<li>超时事件：发生超时，发送方是发送所有传输过去但是没有被确认的帧</li>
+</ol>
+<p>窗口长度问题：</p>
+<p>如果采用n个比特对帧编号，发送窗口的尺寸$W_t$应满足$1\le W_t\le 2^n-1$.发送尺寸过大，就不能区分新和旧的帧。</p>
+<blockquote>
+<p>理解窗口问题：<a target="_blank" rel="noopener" href="https://blog.csdn.net/mr_j0304/article/details/89599086（笑死）">https://blog.csdn.net/mr_j0304/article/details/89599086（笑死）</a></p>
+</blockquote>
+<p>pros：连续发送提高了信道利用率</p>
+<p>cons：重传是必须把可能是正确传送的内容重传，效率低了</p>
+<h5 id="3-4-2-选择重传SP"><a href="#3-4-2-选择重传SP" class="headerlink" title="3.4.2 选择重传SP"></a>3.4.2 选择重传SP</h5><p>发送方必响应的三件事:</p>
+<ol>
+<li>上层的调用；</li>
+<li>收到了一个ACK；#如果是下界，就滑动窗口；</li>
+<li>每个帧都有自己的定时器</li>
+</ol>
+<p>接收方要做的事：</p>
+<ol>
+<li>来者不拒，滑动窗口</li>
+<li>如果收到了窗口序号外的帧（说明自己发的ack丢了）那么再发一个ACK</li>
+</ol>
+<p>窗口长度问题：</p>
+<p>发送窗口等于接收窗口。——发送过大导致不能接收。最好是$W_s=W_r=2^{(n-1)}$</p>
+<h4 id="3-5-点对点协议PPP"><a href="#3-5-点对点协议PPP" class="headerlink" title="3.5 点对点协议PPP"></a>3.5 点对点协议PPP</h4><p>只支持全双工链路，面向字节的协议。</p>
+<p>满足的要求：简单、封装成帧、透明传输(==异步线路：使用字节填充/同步线路：用比特填充==)、多种网络层协议、多种链路类型、差错检测、检测连接状态、MTU（&lt;=1500）、网络层地址协商。</p>
+<p>LCP：建立物理连接，通信的双方可以协商一些选项</p>
+<p>NCP：建立逻辑连接</p>
+<h4 id="3-6-高级数据链路控制HDLC"><a href="#3-6-高级数据链路控制HDLC" class="headerlink" title="3.6 高级数据链路控制HDLC"></a>3.6 高级数据链路控制HDLC</h4><p>使用0比特插入法实现透明传输。只支持全双工链路。</p>
+<p>信息帧、监督帧、无编号帧。</p>
+<p><strong>对比</strong>：</p>
+<p><img src="/2020/11/01/network_notes/14.png" alt="image-20201222145337196" style="zoom:60%;"></p>
+<h3 id="第四章：介质访问控制子层"><a href="#第四章：介质访问控制子层" class="headerlink" title="第四章：介质访问控制子层"></a>第四章：介质访问控制子层</h3><blockquote>
+<p> ALOHA，CSMA，CSMA/CD，CSMA/CA，RTS/CTS，隐蔽站，暴露站，IEEE 802体系结构，MAC Address，Ethernet MAC Frame，最短帧长，互连设备，网桥/交换机的工作原理，VLAN，802.11 WLAN</p>
+</blockquote>
+<h4 id="4-1-ALOHA"><a href="#4-1-ALOHA" class="headerlink" title="4.1 ALOHA"></a>4.1 ALOHA</h4><ul>
+<li>两个版本：纯ALOHA/ 分槽ALOHA</li>
+<li>基本思想：当有用户数据需要发送的时候就传输</li>
+<li><strong>竞争</strong>：系统中多个用户共享一个信道的方法会导致冲突</li>
+</ul>
+<h5 id="4-1-1-纯ALOHA"><a href="#4-1-1-纯ALOHA" class="headerlink" title="4.1.1 纯ALOHA"></a>4.1.1 纯ALOHA</h5><ol>
+<li>生成帧以后就发送（任意时间，不关心信道是否被使用）;</li>
+<li>检测信道，判断是否成功;</li>
+<li>如果冲突，失败，等随机事件后重发;</li>
+<li>vulnerable time = 2T;</li>
+<li>吞吐量S=$GP_0$;</li>
+<li>最好的信道利用率为$1/2e$.</li>
+</ol>
+<p><img src="/2020/11/01/network_notes/15.png" alt="image-20201222160239706" style="zoom:25%;"></p>
+<h5 id="4-1-2-分槽ALOHA"><a href="#4-1-2-分槽ALOHA" class="headerlink" title="4.1.2 分槽ALOHA"></a>4.1.2 分槽ALOHA</h5><ol>
+<li>把时间分成时间片，时间间隔=帧时T；</li>
+<li>发送帧在间隔的起点，因此冲突只发生在开头；</li>
+<li>vulnerable time = T</li>
+<li>一旦某个站点占用时间槽并IQ而发送成功，该槽内无冲突；</li>
+<li>最好的信道利用率为$1/e$.</li>
+</ol>
+<p><img src="/2020/11/01/network_notes/16.png" alt="image-20201222163535202" style="zoom:50%;"></p>
+<h4 id="4-2-载波侦听多路协议CSMA"><a href="#4-2-载波侦听多路协议CSMA" class="headerlink" title="4.2 载波侦听多路协议CSMA"></a>4.2 载波侦听多路协议CSMA</h4><p>Carrier Sense Multiple Access——站可以检测其他的站在做什么，再调整自己的行为。</p>
+<p>CSMA can reduce the possibility of collision, but can’t eliminate it.</p>
+<h5 id="4-2-1-坚持和非坚持CSMA"><a href="#4-2-1-坚持和非坚持CSMA" class="headerlink" title="4.2.1 坚持和非坚持CSMA"></a>4.2.1 坚持和非坚持CSMA</h5><p><strong>1. 一坚持</strong></p>
+<ul>
+<li>侦听—&gt;信道空闲—&gt;发送</li>
+<li>侦听—&gt;信道忙—&gt;侦听直到听到空闲—&gt;发送</li>
+</ul>
+<p><strong>2. 非坚持</strong>（延迟大）</p>
+<ul>
+<li>侦听—&gt;信道空闲—&gt;发送</li>
+<li>侦听—&gt;信道忙—&gt;等待随机时间后发送（不监听，就看看过段时间空了没）</li>
+</ul>
+<p><strong>3. p坚持</strong></p>
+<ul>
+<li>侦听—&gt;信道空闲—&gt;以p的概率发送—-</li>
+</ul>
+<h5 id="4-2-2-CSMA-CD"><a href="#4-2-2-CSMA-CD" class="headerlink" title="4.2.2 CSMA/ CD"></a>4.2.2 CSMA/ CD</h5><p>带冲突检测的载波侦听协议——“先听后发，边发边听”，以太网的基础。只能是半双工</p>
+<p><img src="/2020/11/01/network_notes/17.png" alt="image-20201222163509772"></p>
+<h4 id="4-3-无冲突协议"><a href="#4-3-无冲突协议" class="headerlink" title="4.3 无冲突协议"></a>4.3 无冲突协议</h4><p><strong>1、位图协议</strong>：在实际传送之前先广播自己有发送的需求到竞争槽</p>
+<p>​                                                                                                                                                                                                                </p>
+<h4 id="4-4-隐蔽站和暴露站问题"><a href="#4-4-隐蔽站和暴露站问题" class="headerlink" title="4.4 隐蔽站和暴露站问题"></a>4.4 隐蔽站和暴露站问题</h4><p><strong>隐蔽站</strong>：由于竞争者离得太远而导致无法检测到潜在的竞争者。比如A给B发数据，但是C载波侦听的时候听不到A（太远了）所以以为自己给B阿发不会有问题，就发送给B，然后在B处发生冲突。</p>
+<p><img src="/2020/11/01/network_notes/18.png" alt="image-20201222165220070" style="zoom:40%;"></p>
+<center style="color:#C0C0C0;text-decoration:underline">隐蔽站问题</center>
+
+<p><strong>暴露站</strong>：非竞争者隔得太近，暴露给对方导致对方以为有冲突。B向A传，C想给D传，结果C真听到传输进行，以为不能向D传。</p>
+<p><img src="/2020/11/01/network_notes/19.png" alt="image-20201222165610082" style="zoom:35%;"></p>
+<p><strong>解决方案：MACA</strong></p>
+<p>MACA：冲突避免多路访问，可以代替CSMA。</p>
+<p>技术：</p>
+<ol>
+<li><p>想要发送，给接收方发一个RTS（包含数据长度）；</p>
+<pre><code>          2. 对方同意，返回一个CTS（包含数据长度）；
+                  3. 收到CTS，开始传输。
+                    4. 侦听到RTS，说明离发送方近，保持沉默直到CTS回来；帧听到CTS，说明离接收方近，保持沉默直到帧传完。
+</code></pre></li>
+</ol>
+<h4 id="4-5-IEEE-802标准"><a href="#4-5-IEEE-802标准" class="headerlink" title="4.5 IEEE 802标准"></a>4.5 IEEE 802标准</h4><p>IEEE 802将OSI的数据链路层分为两个子层，分别是逻辑链路控制(Logical Link Control, LLC)和介质访问控制(Media Access Control, MAC)</p>
+<p><img src="/2020/11/01/network_notes/20.png" alt="image-20201222171431465"></p>
+<p><strong>二进制指数后退算法：</strong></p>
+<p>CSMA/CA </p>
+<p>在第i次冲突后，从$0\to2^i-1$中间随机选一个数。达到十次冲突以后，随机数的选择区间被固定在1023不再增加，16次冲突以后发送失败报告。</p>
+<h4 id="4-7-互联设备"><a href="#4-7-互联设备" class="headerlink" title="4.7 互联设备"></a>4.7 互联设备</h4><p><strong>1、网桥</strong>（不涉及网络层）</p>
+<p>先检查此帧的目的MAC地址，然后再确定将该帧转发在哪个接口或者丢弃。转发和过滤</p>
+<p>优点：</p>
+<ol>
+<li>过滤通信量，增大吞吐量；</li>
+<li>提高了可靠性；</li>
+<li>可以互联不同的物理层、MAC和不同速率的以太网。</li>
+</ol>
+<p>==如果把三个网段用网桥连接起来，那么吞吐量为三者之和（如果使用物理层设备，那就是还是员来的吞吐量）== </p>
+<p>透明网桥：以太网的站点不知道发送的帧将经过哪几个网桥。</p>
+<p>透明网桥在做自学习的时候，写是写原地址的信息，读是读目的地址的信息。转发表是会被删除的！为了保持最新状态。</p>
+<p>原路由网桥： 向要通信的发送发现帧</p>
+<p><strong>2、交换机</strong></p>
+<p><img src="/2020/11/01/network_notes/21.png" alt="image-20201222201307988" style="zoom:50%;"></p>
+<p>可以独占传输媒体带宽：可以占用交换机的总带宽。</p>
+<p>直通式交换机：查找MAC地址，时延小，但是不检错，速率不同的端口不可以交换</p>
+<p>存储转发：放入高速缓存。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>设备</th>
+<th>能否隔离冲突域</th>
+<th>能否隔离广播域</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>物理层设备（中继器、集线器）</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>链路层设备（网桥、交换机）</td>
+<td>v</td>
+<td>x</td>
+</tr>
+<tr>
+<td>网络层设备（路由器）</td>
+<td>v</td>
+<td>v</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>广播域：指的是广播帧(目标MAC地址全部为1)所能传递到的范围，亦即能够直接通信的范围。</p>
+<ul>
+<li>交换机能缩小冲突域的范围，交换接的每一个端口就是一个冲突域；</li>
+<li>路由器默认也是可以隔离冲突域的。</li>
+</ul>
+<p>冲突域：就是同一时间内只能有一台设备发送信息的范围。</p>
+<ul>
+<li>第三层设备能隔离广播域，比如Router。路由器能隔离广播域，其每一个端口就是一个广播域；</li>
+<li>数据链路层的VLAN也能隔离广播域。</li>
+</ul>
+</blockquote>
+<h4 id="4-8-IEEE-802-11无线局域网"><a href="#4-8-IEEE-802-11无线局域网" class="headerlink" title="4.8 IEEE 802.11无线局域网"></a>4.8 IEEE 802.11无线局域网</h4><p>无线局域网 &gt; WIFI （Aeria）</p>
+<p><img src="/2020/11/01/network_notes/22.png" alt="image-20201222210913007" style="zoom:33%;"></p>
+<p>地址1~4：接收端、发送端、目的地址、原地址</p>
+<h4 id="4-9-VLAN"><a href="#4-9-VLAN" class="headerlink" title="4.9 VLAN"></a>4.9 VLAN</h4><p>VLAN通过限制广播帧转发的范围分割了广播域。更为直观地描述VLAN的话，我们可以把它理解为将一台交换机在逻辑上分割成了数台交换机。</p>
+<h3 id="第五章：网络层"><a href="#第五章：网络层" class="headerlink" title="第五章：网络层"></a>第五章：网络层</h3><blockquote>
+<p>考纲要求：数据报与虚电路，路由算法：DV向量/LSP，拥塞控制，==QoS==，路由器IP协议，IP分类地址、子网划分、超网、CIDR（地址聚集，路由最长匹配），==NAT==，==IPv6==，ICMP，ARP，RIP，==OSPF,  BGP==</p>
+</blockquote>
+<h4 id="5-1-设计问题"><a href="#5-1-设计问题" class="headerlink" title="5.1 设计问题"></a>5.1 设计问题</h4><p>1、 存储转发数据包交换：数据包到达路由器以后，先被存储在路由器上，然后沿着路径转发到下一个路由器，直达目标主机。</p>
+<p>2、服务：将源端产生 的数据包发送到目的机。</p>
+<ul>
+<li>封装；</li>
+<li>寻找目的机；</li>
+<li>选路；</li>
+</ul>
+<p>3、提供给传输层的服务：</p>
+<ul>
+<li>向上提供的服务独立于路由器技术；</li>
+<li>向传输层屏蔽路由器的数量、类型和拓扑关系；</li>
+<li>传输层的网络地址有统一编址方案，可以跨越LAN和WAN。</li>
+</ul>
+<p>4、无连接服务：<strong>数据报datagram</strong></p>
+<p>数据报网络：</p>
+<p><img src="/2020/11/01/network_notes/23.png" alt="image-20201217093208333" style="zoom:30%;"></p>
+<p>表项：目标地址、通往目标地址所使用的出境线路。（当发生流量拥塞等时，更新路由表）</p>
+<p><em>注意：F只是一个Router，当数据包到达了F以后，被封装成一个帧通过连接了H2的LAN被发送到H2。</em></p>
+<p>5、面向连接的服务：</p>
+<p>当建立连接时，source到destination的路径就被当做这个链接的一部分被确定了下来，保存在中间路由器的表中。<strong>MPLS</strong>多协议标记交换</p>
+<p>面向连接：<strong>虚电路Virtual Circuit</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>比较</th>
+<th>数据报子网</th>
+<th>虚电路子网</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电路</td>
+<td>不一定要建立电路</td>
+<td>一定要建立电路</td>
+</tr>
+<tr>
+<td>分组</td>
+<td>包含完整的源地址、目的地之的信息，独立寻址</td>
+<td>只包括一个短的VC编号</td>
+</tr>
+<tr>
+<td>路由</td>
+<td>不需要保留连接状态</td>
+<td>需要保留连接状态</td>
+</tr>
+<tr>
+<td>路由器失效影响</td>
+<td>基本没有影响</td>
+<td>连接中断</td>
+</tr>
+<tr>
+<td>服务质量拥塞控制</td>
+<td>很难实现</td>
+<td>容易实现</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2020/11/01/network_notes/24.png" alt="image-20201217095137211" style="zoom:30%;"></p>
+<h4 id="5-2-路由算法"><a href="#5-2-路由算法" class="headerlink" title="5.2 路由算法"></a>5.2 路由算法</h4><p>负责确定一个入境数据包应该发送到那一条输出线路上。</p>
+<blockquote>
+<p>路由器内两个进程：</p>
+<ul>
+<li>对数据包进行处理，查找对应的出境路径（forward）</li>
+<li>负责生成和更新路由表（apply to 路由算法）</li>
+</ul>
+</blockquote>
+<p><em>正确性、简单性、鲁棒性、稳定性、公平性、有效性</em></p>
+<p>静态路由（自适应算法）：改变路由政策，以反映出拓扑结构的变化</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>路由模式</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>静态</td>
+<td>安全，总是通过同一路径到达（稳定），小网络中容易实施，不需要cpu等</td>
+<td>仅适用于简单网络；网络增大， 配置变复杂；需要人工的更新和维护</td>
+</tr>
+<tr>
+<td>动态</td>
+<td>适用于有多个路由器的网络，不受到规模的限制。而且可以自动更新和维护路由信息</td>
+<td>实施复杂， 有安全隐患，而且需要CPU等来维护</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="5-2-1-优化原则"><a href="#5-2-1-优化原则" class="headerlink" title="5.2.1 优化原则"></a>5.2.1 优化原则</h5><p>优化直接结果：所有的源到一个制定目标的最优路径集合构成了以source为根节点的树（<strong>汇集树</strong>）形成了DAG。</p>
+<h5 id="5-2-2-最短路径算法"><a href="#5-2-2-最短路径算法" class="headerlink" title="5.2.2 最短路径算法"></a>5.2.2 最短路径算法</h5><p>即Dijkstra算法</p>
+<h5 id="5-2-3-泛洪算法flooding"><a href="#5-2-3-泛洪算法flooding" class="headerlink" title="5.2.3 泛洪算法flooding"></a>5.2.3 泛洪算法flooding</h5><p>该技术将每一个入境数据包发送到除了该数据包到达的线路以外的出境路线。</p>
+<p>问题：传输产生重复数据包</p>
+<p>解决：</p>
+<ol>
+<li><p>每个数据包的头设置一个跳计数器</p>
+<pre><code>            2. 路由器跟踪数据包
+</code></pre></li>
+</ol>
+<p>泛洪可以并发选择每一条可能的路径，因此也可以找到最短的一条。该算法鲁棒性好。缺点是开销大，造成了浪费。</p>
+<h5 id="5-2-4-距离矢量算法（distance-vector-routing）"><a href="#5-2-4-距离矢量算法（distance-vector-routing）" class="headerlink" title="5.2.4 距离矢量算法（distance vector routing）"></a>5.2.4 距离矢量算法（distance vector routing）</h5><p><strong>RIP协议</strong>：RIP协议基于距离矢量算法（DistanceVectorAlgorithms），使用“跳数”(即metric)来衡量到达目标地址的路由距离。这种协议的路由器只关心自己周围的世界，只与自己相邻的路由器交换信息，范围限制在15跳(15度)之内，再远，它就不关心了。</p>
+<p>DV是分布式bellman-ford路由算法，用于小型网络。工作原理：</p>
+<ol>
+<li>每个节点维护路由表，包含首选的出境路线以及距离估计值（量度可能是跳数）；</li>
+<li>和自己的邻居交换路由信息；</li>
+<li>根据接收到的交换矢量信息，更新自己的路由表。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>交换的信息太大了（邻居的路由表都要接收）不适合大型的网路</li>
+<li>路由信息传播的慢</li>
+<li>路由器的信息认识不一致，可能使用不同的拓扑结构</li>
+<li>收敛慢*（导致无穷计算问题）</li>
+</ol>
+<p><strong>无穷计算问题</strong>：好消息传播快，坏消息传播慢。</p>
+<p><img src="/2020/11/01/network_notes/25.png" alt="image-20201217110002667" style="zoom:60%;"></p>
+<h5 id="5-2-5-链路状态路由"><a href="#5-2-5-链路状态路由" class="headerlink" title="5.2.5 链路状态路由"></a>5.2.5 链路状态路由</h5><p>步骤：</p>
+<ol>
+<li><p><strong>发现</strong>它的邻居节点，并了解网络地址；</p>
+<p>点到点的线路发送hello报文——收者应答（with自己==全局唯一==的名字）</p>
+<p>多个路由器通过广播链路连接（比如交换机、环、以太网等）让他们之间传递hello</p>
+</li>
+<li><p><strong>设置</strong>到每个邻居节点的距离或者成本度量；</p>
+<p>常见：使用链路带宽、延迟。</p>
+<p>发送一个ECHO，另一端立刻应答——测量往返时间RTT，得到合理估计</p>
+</li>
+<li><p><strong>构造</strong>一个包所有刚知道的链路信息包；Link State Packets（LSPs）</p>
+<p>数据包内容：发送方的标识符，序号，年龄，邻居列表，到邻居的成本</p>
+</li>
+<li><p><strong>发送</strong>到其他路由器，并接受其他的信息包；</p>
+<p>算法：</p>
+<p>​    使用泛洪的方法（每个数据包都包含了序号，序号递增，从而控制泛洪的规模）</p>
+<p>​    路由器记录它看见的所有&lt;原路由器，序号&gt;</p>
+<p>​        —-&gt; 新数据包：广播</p>
+<pre><code>    ---&gt; 重复数据包：丢弃
+</code></pre><p>​        —-&gt; 过时（序号小于最大）：拒绝</p>
+<p>问题：</p>
+<p>​    (1) 序号绕回：使用32位</p>
+<p>​    (2) 路由器崩溃，数据丢失</p>
+<p>​    (3) 序列号破坏，传输出错</p>
+<p>解决方案：</p>
+<p>age—；当age==0，当前LSP被丢弃</p>
+<p>注意，所有的链路状态要求被确认，从而防止线路故障。</p>
+<p>下图是路由器B的状态包缓冲区，必须要得到确认，才能从缓冲放到路由器中进行使用。</p>
+<p><img src="/2020/11/01/network_notes/26.png" alt="image-20201217114802386"></p>
+<center style="color:#C0C0C0;text-decoration:underline">link state缓冲示意图</center>
+</li>
+<li><p><strong>计算</strong>最短路径。</p>
+<p>使用的是最短路径算法</p>
+</li>
+</ol>
+<h5 id="5-2-6-层次路由"><a href="#5-2-6-层次路由" class="headerlink" title="5.2.6 层次路由"></a>5.2.6 层次路由</h5><p>分层路由：路由器被划分成区域（Region）。每个路由器知道如何把数据包路放到自己所在的区域内的目标地址，但对于其他地址不知情。</p>
+<p>发现：对于包含了N个路由器的网络，最优的层数是$ln N$</p>
+<h5 id="5-2-7-广播路由"><a href="#5-2-7-广播路由" class="headerlink" title="5.2.7 广播路由"></a>5.2.7 广播路由</h5><p>1、受控制的泛洪：使用<strong>逆向路径转发</strong>，如果一台路由器接收到一个分组的时候，需要做一件事情，查看一下分组的源地址，检查这个分组是否是从源结点到此结点的最短路径上。如果是的话，就进行继续转发，如果不是，则直接丢弃分组。</p>
+<p>2、生成树广播：需要定义一个中心结点，然后其他结点都向中心结点单播“加入树报文”，如果路径还未在树中，那么就直接加入树，如果路径中的某些部分已经在树中，例如该路径是B -&gt; A -&gt; F -&gt; C -&gt; G，但是F已经在树中了，那么就将B -&gt; A加入到树中。通过这样的方法创建一颗生成树。            </p>
+<p><img src="/2020/11/01/network_notes/27.png" alt="image-20201217140854787" style="zoom:33%;"></p>
+<center style="color:#C0C0C0;text-decoration:underline">生成树广播机制</center>
+
+<p>==这个spanning tree怎么生成==</p>
+<p><em>note：后面还有几种，这里不一一列举讲了</em></p>
+<h4 id="5-3-拥塞控制算法"><a href="#5-3-拥塞控制算法" class="headerlink" title="5.3 拥塞控制算法"></a>5.3 拥塞控制算法</h4><p>congestion：某一部分资源超过了处理的能力，没有缓冲区，处理拥塞是网络层和运输层共同的责任。</p>
+<h5 id="5-3-1-解决的基本途径"><a href="#5-3-1-解决的基本途径" class="headerlink" title="5.3.1 解决的基本途径"></a>5.3.1 解决的基本途径</h5><ol>
+<li>increase the resource 扩容</li>
+<li>decrease the load 减少负载</li>
+</ol>
+<p>Pretentative                                                                     reactive</p>
+<p>​    &lt;—————————————————————————————————————&gt;</p>
+<p>​             provision  routing  control throttling shedding </p>
+<ul>
+<li><p>流量感知路由：用一些指标对路径加权，权值最小的负载最轻</p>
+</li>
+<li><p>准入控制：在建立新的虚电路之前就控制，如果会造成拥塞，就不让其被建立</p>
+<ul>
+<li><strong>早期随机检测（RED）</strong>：路由器维护一个运行队列长度的平均值，当长度超过了阈值，该链路被认为将要拥塞，就随机丢弃一小部分数据包。</li>
+</ul>
+</li>
+<li><p>流量调节：被拥塞的路由器发出信号要求slow down。</p>
+<ul>
+<li><p>ECN显式拥塞通知：在双向通信的基础上，实现反馈，将带有mark的packet送回到Host machine，告知其目标路由器（即发出消息的路由器）路径上有拥塞</p>
+<p>（这一功能通过ack捎带带回原来的路径）</p>
+</li>
+</ul>
+</li>
+<li><p>负载脱落：</p>
+<ul>
+<li>随机丢弃（RED）在拥塞==有苗头==的时候就随机丢弃数据包</li>
+<li>丢弃新到达的：适合于文件传输类</li>
+<li>丢弃早到的分组：适用于多媒体类</li>
+<li>丢弃不太重要的分组：需要提前指明优先级</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-4-服务质量"><a href="#5-4-服务质量" class="headerlink" title="5.4 服务质量"></a>5.4 服务质量</h4><p><em>对应PPT P67， 书312，这好像是我掉的那节课讲的</em> :sweat_smile:</p>
+<h5 id="5-4-2-流量整形"><a href="#5-4-2-流量整形" class="headerlink" title="5.4.2 流量整形"></a>5.4.2 流量整形</h5><p>算法：令牌桶、漏桶</p>
+<p>目标：发送适合他们需求的各种各样流量</p>
+<p><img src="/2020/11/01/network_notes/28.png" alt="image-20201217150229736" style="zoom:33%;"></p>
+<ul>
+<li>当满时，漏桶的分组被丢弃，而令牌桶丢掉令牌而不是分组；</li>
+<li>令牌桶允许突发，但最大突发受限于令牌桶大小，漏桶不可以；</li>
+<li><img src="/2020/11/01/network_notes/29.png" alt="image-20201217150759832" style="zoom:50%;"></li>
+</ul>
+<h4 id="5-5-网际互联"><a href="#5-5-网际互联" class="headerlink" title="5.5 网际互联"></a>5.5 网际互联</h4><p><em>PPT p78， 书p326</em></p>
+<p>网桥主要用来连接链路层的同类网络，而路由器用来连接网络层不同的网络。</p>
+<p>1、<strong>隧道技术</strong></p>
+<p>connect two networks through a middle one. 比如说两个IPv4的网络中间隔了一个IPv6，那么就在传输的时候把一个IPv4的内容用IPv6封装起来，整个IPv4的datagram成为了IPv6的payload部分。</p>
+<p>2、<strong>数据包分段 packet fragmentation</strong></p>
+<p>因为某些原因（书p332），要求限制数据包的最大长度。通用的IP协议运行的数据包长度最大为65515字节。有一种方法：设置<strong>MTU</strong>（最大传输单元）</p>
+<p>允许路由器将数据包拆分成段，将每一个段作为一个独立的网络层数据包进行发送。</p>
+<p>透明分片：先在路由器中被分割成多段，再发到同一个出口路由器，被重新组合起来</p>
+<p>非透明分片：到了目标主机才会充足，也就是交付的时候才交完整内容。此方法路由器所做的工作比较少，IP就是这种方式</p>
+<p>ref: <a target="_blank" rel="noopener" href="https://blog.csdn.net/hanzhen7541/article/details/79031781">https://blog.csdn.net/hanzhen7541/article/details/79031781</a></p>
+<p>路径MTU发现：这个策略是为了避免了传到下一个路由器因为太大而要做分片。当传输到某一个路由器的时候，如果大小已经超过了其所能传输的最大量，发送一个信号回去给source router，并且当前数据包被丢弃。</p>
+<p><img src="/2020/11/01/network_notes/30.png" alt="路径MTU发现"></p>
+<center style="color:#C0C0C0;text-decoration:underline">路径MTU发现示意图</center>
+
+
+
+<h4 id="5-6-Internet的网络层"><a href="#5-6-Internet的网络层" class="headerlink" title="5.6 Internet的网络层"></a>5.6 Internet的网络层</h4><h5 id="5-6-1-IPv4协议"><a href="#5-6-1-IPv4协议" class="headerlink" title="5.6.1 IPv4协议"></a>5.6.1 IPv4协议</h5><p><img src="/2020/11/01/network_notes/31.png" alt="image-20201217203234506" style="zoom:33%;"></p>
+<p>version—版本号，目前经常使用的是第四版本，所以version的值一般为4；</p>
+<p>IHL—header length，注意此length是32位字长，因此最短为5，最长为15（options can be 10 more）；</p>
+<p>service：现在前6位一般用于标记数据包的服务类别， 后2位用来携带显式的拥塞控制。</p>
+<p>totlengh：总长度</p>
+<p>protocol：UDP（17）TCP（6）</p>
+<p><em>第二行全部是用来做分片问题的，id是为了区分65535个不同的包，DF是don’t fragment,当DF==1时，表示不愿意做分片，因此大于了当前路由器所处理的能力时，就会丢弃这个数据包，并向source发送此信息，从而让他自己切了重新发。MF是如果DF\==0的情况下，表示了当前的片后面是否还有，也就是表示当前的碎片是不是最后一个。最后的frag offset就是表示了块偏移量的问题。</em></p>
+<p>ttl：time to leave，还有多长时间离开这个网络，避免了数据包永远留在网络里。一般设置为255.</p>
+<p>protocol：tcp 或者 udp</p>
+<h5 id="5-6-2-IP-地址"><a href="#5-6-2-IP-地址" class="headerlink" title="5.6.2 IP 地址"></a>5.6.2 IP 地址</h5><p>IP地址是点分十进制：xxxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx</p>
+<p><strong>网络的层次化设计：</strong></p>
+<p><img src="/2020/11/01/network_notes/32.png" alt="image-20201218133934287" style="zoom:30%;"></p>
+<p>1． A类IP地址 </p>
+<p>一个A类IP地址由1字节的网络地址和3字节主机地址组成，网络地址的最高位必须是“0”， 地址范围从==1.0.0.0 到126.0.0.0==。可用的A类网络有126个，每个网络能容纳$2^{24}-2$个主机。 </p>
+<p>2． B类IP地址 </p>
+<p>一个B类IP地址由2个字节的网络地址和2个字节的主机地址组成，网络地址的最高位必须是“10”，地址范围从128.0.0.0到191.255.255.255。可用的B类网络有16382个，每个网络能容纳$2^{16}-2$个主机 。 </p>
+<p>3． C类IP地址 </p>
+<p>一个C类IP地址由3字节的网络地址和1字节的主机地址组成，网络地址的最高位必须是“110”。范围从192.0.0.0到223.255.255.255。C类网络可达209万余个，每个网络能容纳254个主机。 </p>
+<p><strong>前缀：</strong>IP地址具有层次结构，一个网络对应一块连续的IP地址空间，这个地址空间就是地址的前缀。由于前缀的长度并不能通过IP地址推断，因此引入<strong>子网掩码</strong>。</p>
+<p><strong>子网：</strong>在内部将一个网络块分成几个部分供多个内部网络使用，但是对外部仍然像是单个网络。</p>
+<p>subnetting splits up IP prefix to help with management</p>
+<p><em>这里关于划分和聚合的问题就直接后面做题</em></p>
+<p><strong>CIDR——无类域间路由</strong>：分成不同的网络，但是这些不同的网络并没有类型区分。CIDR与层次化设计不同之处在于，CIDR的地址块大小不是固定的。</p>
+<p><strong>NAT——网络地址转换：</strong>在主机不活跃的时候收回分配给他的IP地址。每一个主机在网络内部有一个IP地址，在传输数据的时候要把内’的IP地址转换为共享的公共IP地址</p>
+<p>为了达成公用IP与网络内私有IP的转换，NAT转换器完成转换，并且维护一个地址转换表。</p>
+<h5 id="5-6-3-IPv6协议"><a href="#5-6-3-IPv6协议" class="headerlink" title="5.6.3 IPv6协议"></a>5.6.3 IPv6协议</h5><p>IPV4没有anycast，也有multicast、unicast，但这些IPv6都有。</p>
+<h5 id="5-6-4-Internet-控制协议"><a href="#5-6-4-Internet-控制协议" class="headerlink" title="5.6.4 Internet 控制协议"></a>5.6.4 Internet 控制协议</h5><p>上面所说的IP协议都是用来做数据传输的。在网络层除此之外，还有几个辅助的控制协议。</p>
+<p><strong>ICMP：Internet 控制消息协议</strong></p>
+<p>（1）功能：项数据包的源端报告差错事件；测试网络（如ping）。</p>
+<p>（2）消息类型：包括目的地不可达、超时、参数问题、源抑制、重定向、回显、请求时间戳、路由器通告等。详细的消息类型及其使用见书P358.</p>
+<p>（3）应用：</p>
+<ul>
+<li>Ping：原机向目标发出ICMP 的请求报文，站点收到则必须回复。可以通过ping的结果反映TCP/IP是否正常、网络设备是否正常，还可以检查对外链接的路由器、检查DNS。</li>
+<li>路径的MTU：可以检测所能传输的最大长度。</li>
+<li>注意：ICMP只能发给source，不能生成自己的差错报告（不得递归使用）。</li>
+</ul>
+<p><strong>ARP：地址解析协议</strong></p>
+<p>（1）原理：知道目标地址的IP地址求目标地址的MAC地址，做法是广播一个ARP请求，只有目标主机应答，并且回复自己的mac地址。（所以，ARP的请求帧里面的目的地址是全1）</p>
+<p>（2）优化：</p>
+<ul>
+<li>建立一个ARP表缓存结果（掉电会丢失）；</li>
+<li>用ARP请求中的原信息来更新表；</li>
+<li>每台机器启动时广播IP/MAC地址时，可以主动报告自己的信息（如果有任何自己一样，就会收到应答）；</li>
+<li>广播的时候，所有主机都能收到当前源的IP地址；</li>
+<li>周期性删除过时的信息。</li>
+</ul>
+<p>（3）安全隐患：ARP病毒</p>
+<p><strong>OSPF：内部网关路由协议</strong></p>
+<p>（1）术语：</p>
+<ul>
+<li>Router ID：32位，自治系统内唯一；</li>
+<li>协议号：89，直接封装在报文中；</li>
+<li>TTL=1，通常OSPF值传给邻居的路由器。</li>
+</ul>
+<p>（2）技术：</p>
+<ul>
+<li><p>OSPF 中划分区域的目的就是在于控制链路状态信息LSA 泛洪的范围、减小链路状态数据库LSDB的大小、改善网络的可扩展性、达到快速地收敛。</p>
+</li>
+<li><p>当设计 OSPF 网络时，一个很好的方法就是从骨干区域开始，然后再扩展到其他区域。骨干区域在所有其他区域的中心，即所有区域都必须与骨干区域物理或逻辑上相连，这种设计思想的原因是 OSPF 协议要把所有区域的路由信息引入骨干区，然后再依次将路由信息从骨干区域分发到其它区域中。</p>
+</li>
+<li>backbone ID：not IP addr</li>
+<li><p><img src="/2020/11/01/network_notes/33.png" alt="image-20201218172353257"></p>
+</li>
+<li><p>支持了安全性（因为要鉴别发送人身份）</p>
+</li>
+<li>作为一种链路状态的路由协议，OSPF将链路状态组播数据LSA（Link State Advertisement）传送给在某一区域内的所有路由器，这一点与距离矢量路由协议不同。运行距离矢量路由协议的路由器是将部分或全部的路由表传递给与其相邻的路由器。</li>
+</ul>
+<p><strong>BGP：外部网关路由协议</strong></p>
+<p><img src="/2020/11/01/network_notes/34.png" alt="image-20201223002433260"></p>
+<h3 id="第六章：运输层"><a href="#第六章：运输层" class="headerlink" title="第六章：运输层"></a>第六章：运输层</h3><blockquote>
+<p>考纲要求： 端口，套接字，UDP及其伪首部，TCP连接建立与释放，TCP可靠传输，TCP流控机制，TCP拥塞控制：慢启动、拥塞避免、快恢复，Socket，C/S架构</p>
+</blockquote>
+<p>运输层为相互通信的应用进程提供了逻辑通信。“逻辑通信”的意思是：运输层之间的通信好像是沿水平方向传送数据。但事实上这两个运输层之间并没有一条水平方向的物理连接。</p>
+<p>运输层向高层用户屏蔽了下面网络核心的细节（如网络拓扑、所采用的路由选择协议等），它使应用进程看见的就是好像在两个运输层实体之间有一条端到端的逻辑通信信道。</p>
+<h4 id="6-1-端口号"><a href="#6-1-端口号" class="headerlink" title="6.1 端口号"></a>6.1 端口号</h4><p>解决不需要知道实现这个功能的进程的问题。虽然通信的终点是应用进程，但我们可以把端口想象是通信的终点，因为我们只要把要传送的报文交到目的主机的某一个合适的目的端口，剩下的工作（即最后交付目的进程）就由 TCP 来完成。</p>
+<ul>
+<li>范围：0 至 65535 （$2^{16}$)；</li>
+<li>端口号只具有本地意义，在因特网中不同计算机的相同端口号是没有联系的；</li>
+<li>三类端口：熟知端口 / 登记端口号 / 客户端口号</li>
+</ul>
+<h4 id="6-4-Internet-传输协议：UDP"><a href="#6-4-Internet-传输协议：UDP" class="headerlink" title="6.4 Internet 传输协议：UDP"></a>6.4 Internet 传输协议：UDP</h4><ul>
+<li>UDP 只在 IP 的数据报服务之上增加了端口的功能和差错检测的功能；</li>
+<li>无连接：发送前不建立连接；</li>
+<li>尽最大努力交付，没有拥塞控制；</li>
+<li><p>支持一对一、一对多、多对一和多对多；</p>
+</li>
+<li><p>面向报文：添加首部后就向下交付 IP ，不合并，也不拆分；接收时也是在去除首部后就原封不动地交付上层的应用进程。</p>
+</li>
+</ul>
+<p><img src="/2020/11/01/network_notes/35.png" alt="image-20201223010739066" style="zoom:40%;"></p>
+<h4 id="6-5-传输控制协议TCP"><a href="#6-5-传输控制协议TCP" class="headerlink" title="6.5 传输控制协议TCP"></a>6.5 传输控制协议TCP</h4><ul>
+<li>TCP 是面向连接的运输层协议，每一条 TCP 连接只能是点对点的；</li>
+<li>TCP 提供可靠交付的服务；</li>
+<li>TCP 提供全双工通信；</li>
+<li>面向字节流；</li>
+<li>TCP 根据对方给出的窗口值和当前网络拥塞的程度来决定一个报文段应包含多少个字节（UDP 发送的报文长度是应用进程给出的）</li>
+<li>TCP 连接的端点叫做套接字(socket)或插口；</li>
+<li>端口号拼接到(contatenated with) IP 地址即构成了套接字</li>
+</ul>
+<p>自动重传请求ARQ：接收方不需要请求发送方重传某个出错的分组。</p>
+<p><img src="/2020/11/01/network_notes/36.png" alt="image-20201223091104162" style="zoom:50%"></p>
+<p>数据偏移：它指出 TCP 报文段的数据起始处距离 TCP 报文段的起始处有多远。“数据偏移”的单位是 32 位字（以 4 字节为计算单位。</p>
+<p>确认 ACK ： 只有当 ACK  1 时确认号字段才有效同步 </p>
+<p>SYN ：同步 SYN = 1 表示这是一个连接请求或连接接受报文。 </p>
+<p>检验和 ：占 2 字节。检验和字段检验的范围包括首部和数据这两部分。在计算检验和时，要在 TCP 报文段的前面加上 12 字节的伪首部</p>
+<p>tcp默认使用累计确认的方法。</p>
+<p>加权平均往返时间</p>
+<h4 id="6-6-套接字Socket"><a href="#6-6-套接字Socket" class="headerlink" title="6.6 套接字Socket"></a>6.6 套接字Socket</h4><p><strong>套接字：</strong></p>
+<p>每一条 TCP 连接唯一地被通信两端的两个端点（即两个套接字）所确定，对应公式：</p>
+<script type="math/tex; mode=display">
+套接字 socket = (IP地址: 端口号)</script><p><strong>C/ S架构：</strong></p>
+<p>CS即Client/Server（客户机/服务器）结构，C/S结构在技能上非常成熟，它的重要特征就是交互性强、拥有安全的存取形式、网络通信数量低、响应速度快、利于处置大量数据。可是这个结构的程序就是针对性开发，变更不够灵活，维护与管理的难度较大。常常只局限在小型局域网，不利于扩展。而且，因为这个结构的每台客户机全部须要安装相对应的客户端程序，分布功能弱并且兼容性差，不可以完成迅速部署安装与配置，因为这样缺少通用性，拥有比较大的局限性。请求拥有肯定专业水准的技能人员去结束。</p>
+<h4 id="6-7-TCP"><a href="#6-7-TCP" class="headerlink" title="6.7 TCP"></a>6.7 TCP</h4><h5 id="6-7-3-拥塞控制"><a href="#6-7-3-拥塞控制" class="headerlink" title="6.7.3 拥塞控制"></a>6.7.3 拥塞控制</h5><p><img src="/2020/11/01/network_notes/37.png" alt="image-20201223143148194" style="zoom:40%;"></p>
+<p>1、慢开始和拥塞避免</p>
+<p><em>note：cwnd=1表示一个报文段，而一个报文段最大长度为MSS</em></p>
+<p><em>传输轮次：发送一批报文段并收到确认的时间，一个往返时延RTT</em></p>
+<p><img src="/2020/11/01/network_notes/38.png" alt="image-20201223143831142"></p>
+<p>注意看图例的加法增大和乘法减小。</p>
+<p>2、快重传和快恢复</p>
+<p>快重传：收到三个冗余的确认就执行快重传（等不到RTT了）</p>
+<p><img src="/2020/11/01/network_notes/39.png" alt="image-20201223144455902"></p>
+<h3 id="第七章：应用层"><a href="#第七章：应用层" class="headerlink" title="第七章：应用层"></a>第七章：应用层</h3><p><img src="/2020/11/01/network_notes/40.png" alt="image-20201223143233111"></p>
+<p><img src="/Users/liqilin/Library/Application Support/typora-user-images/image-20201223143309956.png" alt="image-20201223143309956"></p>
+
+    </article>
+    <!-- license -->
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2020/12/07/arc_notes/" title="2020秋季《计算机体系结构》笔记">
+                    <div class="nextTitle">2020秋季《计算机体系结构》笔记</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+        new Valine({
+            el: '#comment',
+            notify:false,
+            verify:false,
+            appId: "rqg8nF0IPUhLEfImp7Bt6otS-gzGzoHsz",
+            appKey: "lMlsrNdpsnqO9tvxuu2oloUW",
+            placeholder: "请说",
+            path:window.location.pathname,
+            avatar:'mm'
+        });
+    </script>
+
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+        
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+
+
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:xslialee070@outlook.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/SiciliaLeco" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                    
+                    <img class="profile-qr" src="/assets/qr.jpeg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">第一章 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E7%BD%91%E7%BB%9C%E6%A6%82%E5%BF%B5%E5%8F%8A%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 网络概念及分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-1-%E5%B8%B8%E7%94%A8%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1.1 常用概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-2-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.1.2 计算机网络的分类</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 协议分层基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-1-%E5%88%86%E5%B1%82%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 分层的基本原则</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-2-%E5%88%86%E5%B1%82%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 分层的概念</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-ISO-OSI-RM"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 ISO OSI&#x2F;RM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-TCP-IP-RM"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 TCP&#x2F;IP&#x2F;RM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-%E4%BC%A0%E8%BE%93%E6%97%B6%E5%BB%B6%EF%BC%8C%E4%BC%A0%E6%92%AD%E6%97%B6%E5%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 传输时延，传播时延</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-number">2.</span> <span class="toc-text">第二章 物理层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E5%9B%9B%E4%B8%AA%E7%89%B9%E6%80%A7"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 四个特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E5%A5%88%E5%A5%8E%E6%96%AF%E7%89%B9%E5%AE%9A%E7%90%86%E3%80%81%E9%A6%99%E5%86%9C"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 奈奎斯特定理、香农</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E4%BF%A1%E9%81%93%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 信道复用技术</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E4%B8%8E%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 曼彻斯特编码与差分曼彻斯特</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-%E7%A0%81%E5%88%86%E8%AE%A1%E7%AE%97"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 码分计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 传输介质</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">第三章：数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-2-%E6%88%90%E5%B8%A7"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.1.2 成帧</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-3-%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.1.3 差错控制</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-4-%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.1.4 流量控制</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B%E5%92%8C%E7%BA%A0%E6%AD%A3"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 差错检测和纠正</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 停止等待协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 滑动窗口协议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-4-1-GO-BACK-N"><span class="toc-number">3.4.1.</span> <span class="toc-text">3.4.1 GO BACK N</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-4-2-%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0SP"><span class="toc-number">3.4.2.</span> <span class="toc-text">3.4.2 选择重传SP</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-%E7%82%B9%E5%AF%B9%E7%82%B9%E5%8D%8F%E8%AE%AEPPP"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 点对点协议PPP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E6%8E%A7%E5%88%B6HDLC"><span class="toc-number">3.6.</span> <span class="toc-text">3.6 高级数据链路控制HDLC</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82"><span class="toc-number">4.</span> <span class="toc-text">第四章：介质访问控制子层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-ALOHA"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 ALOHA</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-1-1-%E7%BA%AFALOHA"><span class="toc-number">4.1.1.</span> <span class="toc-text">4.1.1 纯ALOHA</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-1-2-%E5%88%86%E6%A7%BDALOHA"><span class="toc-number">4.1.2.</span> <span class="toc-text">4.1.2 分槽ALOHA</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E8%BD%BD%E6%B3%A2%E4%BE%A6%E5%90%AC%E5%A4%9A%E8%B7%AF%E5%8D%8F%E8%AE%AECSMA"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 载波侦听多路协议CSMA</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-1-%E5%9D%9A%E6%8C%81%E5%92%8C%E9%9D%9E%E5%9D%9A%E6%8C%81CSMA"><span class="toc-number">4.2.1.</span> <span class="toc-text">4.2.1 坚持和非坚持CSMA</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-2-CSMA-CD"><span class="toc-number">4.2.2.</span> <span class="toc-text">4.2.2 CSMA&#x2F; CD</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-%E6%97%A0%E5%86%B2%E7%AA%81%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 无冲突协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-%E9%9A%90%E8%94%BD%E7%AB%99%E5%92%8C%E6%9A%B4%E9%9C%B2%E7%AB%99%E9%97%AE%E9%A2%98"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 隐蔽站和暴露站问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-IEEE-802%E6%A0%87%E5%87%86"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 IEEE 802标准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-%E4%BA%92%E8%81%94%E8%AE%BE%E5%A4%87"><span class="toc-number">4.6.</span> <span class="toc-text">4.7 互联设备</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-IEEE-802-11%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">4.7.</span> <span class="toc-text">4.8 IEEE 802.11无线局域网</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-9-VLAN"><span class="toc-number">4.8.</span> <span class="toc-text">4.9 VLAN</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">5.</span> <span class="toc-text">第五章：网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 设计问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 路由算法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-1-%E4%BC%98%E5%8C%96%E5%8E%9F%E5%88%99"><span class="toc-number">5.2.1.</span> <span class="toc-text">5.2.1 优化原则</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-2-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.2.</span> <span class="toc-text">5.2.2 最短路径算法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-3-%E6%B3%9B%E6%B4%AA%E7%AE%97%E6%B3%95flooding"><span class="toc-number">5.2.3.</span> <span class="toc-text">5.2.3 泛洪算法flooding</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-4-%E8%B7%9D%E7%A6%BB%E7%9F%A2%E9%87%8F%E7%AE%97%E6%B3%95%EF%BC%88distance-vector-routing%EF%BC%89"><span class="toc-number">5.2.4.</span> <span class="toc-text">5.2.4 距离矢量算法（distance vector routing）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-5-%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">5.2.5.</span> <span class="toc-text">5.2.5 链路状态路由</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-6-%E5%B1%82%E6%AC%A1%E8%B7%AF%E7%94%B1"><span class="toc-number">5.2.6.</span> <span class="toc-text">5.2.6 层次路由</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-7-%E5%B9%BF%E6%92%AD%E8%B7%AF%E7%94%B1"><span class="toc-number">5.2.7.</span> <span class="toc-text">5.2.7 广播路由</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 拥塞控制算法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-3-1-%E8%A7%A3%E5%86%B3%E7%9A%84%E5%9F%BA%E6%9C%AC%E9%80%94%E5%BE%84"><span class="toc-number">5.3.1.</span> <span class="toc-text">5.3.1 解决的基本途径</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 服务质量</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-4-2-%E6%B5%81%E9%87%8F%E6%95%B4%E5%BD%A2"><span class="toc-number">5.4.1.</span> <span class="toc-text">5.4.2 流量整形</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-5-%E7%BD%91%E9%99%85%E4%BA%92%E8%81%94"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 网际互联</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-6-Internet%E7%9A%84%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">5.6.</span> <span class="toc-text">5.6 Internet的网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-6-1-IPv4%E5%8D%8F%E8%AE%AE"><span class="toc-number">5.6.1.</span> <span class="toc-text">5.6.1 IPv4协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-6-2-IP-%E5%9C%B0%E5%9D%80"><span class="toc-number">5.6.2.</span> <span class="toc-text">5.6.2 IP 地址</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-6-3-IPv6%E5%8D%8F%E8%AE%AE"><span class="toc-number">5.6.3.</span> <span class="toc-text">5.6.3 IPv6协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-6-4-Internet-%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE"><span class="toc-number">5.6.4.</span> <span class="toc-text">5.6.4 Internet 控制协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A%E8%BF%90%E8%BE%93%E5%B1%82"><span class="toc-number">6.</span> <span class="toc-text">第六章：运输层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 端口号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-4-Internet-%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%EF%BC%9AUDP"><span class="toc-number">6.2.</span> <span class="toc-text">6.4 Internet 传输协议：UDP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-5-%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AETCP"><span class="toc-number">6.3.</span> <span class="toc-text">6.5 传输控制协议TCP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-6-%E5%A5%97%E6%8E%A5%E5%AD%97Socket"><span class="toc-number">6.4.</span> <span class="toc-text">6.6 套接字Socket</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-7-TCP"><span class="toc-number">6.5.</span> <span class="toc-text">6.7 TCP</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#6-7-3-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">6.5.1.</span> <span class="toc-text">6.7.3 拥塞控制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">7.</span> <span class="toc-text">第七章：应用层</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 13
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/28</span>
+            <a class="archive-post-title" href="/2022/03/28/MBPfix/">MacBook Pro 2019维修全过程记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/05</span>
+            <a class="archive-post-title" href="/2022/03/05/nudf/">Neural Unsigned Distance Field 解读</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/21</span>
+            <a class="archive-post-title" href="/2022/02/21/Feature-metrics%20Registration%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/">Feature-metrics Registration 解读</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/07</span>
+            <a class="archive-post-title" href="/2022/02/07/KMP%E7%AE%97%E6%B3%95/">KMP算法解读和实现</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/03</span>
+            <a class="archive-post-title" href="/2022/01/03/Correspondence-Free/">Correspondence-Free Point Cloud Registration  阅读笔记</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span>
+            <a class="archive-post-title" href="/2021/12/26/Torch,-CUDA%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E4%BB%A5%E5%8F%8A%E5%AE%9E%E9%AA%8C%E5%AE%A4%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/">Torch, CUDA版本匹配以及实验室服务器配置</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/21</span>
+            <a class="archive-post-title" href="/2021/12/21/Point-Cloud-Registration-md/">Deep Closes Point 阅读笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/15</span>
+            <a class="archive-post-title" href="/2021/12/15/Deep-Global-Registration/">Deep Global Registration 阅读笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span>
+            <a class="archive-post-title" href="/2021/11/02/%E4%BD%BF%E7%94%A8CMake-%E7%BC%96%E8%AF%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97%E5%87%BA%E7%8E%B0Fatal-Error/">使用CMake 编译深度学习模块出现Fatal Error</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span>
+            <a class="archive-post-title" href="/2021/11/01/MacOS%E4%B8%8B%E4%BD%BF%E7%94%A8XQuartz-%E8%BF%9E%E6%8E%A5Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2/">MacOS下使用XQuartz 连接Linux服务器的图形化界面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/28</span>
+            <a class="archive-post-title" href="/2021/01/28/Eye-Gaze-Estimation-md/">Eye Gaze Estimation</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/07</span>
+            <a class="archive-post-title" href="/2020/12/07/arc_notes/">2020秋季《计算机体系结构》笔记</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span>
+            <a class="archive-post-title" href="/2020/11/01/network_notes/">2020秋季《计算机网络》笔记</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="Computer Graphics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Graphics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Vision">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Vision
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Research">
+                <span class="iconfont-archer">&#xe606;</span>
+                Research
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LeetCode">
+                <span class="iconfont-archer">&#xe606;</span>
+                LeetCode
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Algorithm">
+                <span class="iconfont-archer">&#xe606;</span>
+                Algorithm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Linux">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linux
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MacOS">
+                <span class="iconfont-archer">&#xe606;</span>
+                MacOS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="PyTorch">
+                <span class="iconfont-archer">&#xe606;</span>
+                PyTorch
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Architecture">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Architecture
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Networks">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Networks
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CMake">
+                <span class="iconfont-archer">&#xe606;</span>
+                CMake
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Literature Review">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Literature Review
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Notes">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Notes
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Solutions">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Solutions
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "http://example.com",
+        root: siteMetaRoot,
+        author: "Sicilia Lee (李颀琳）"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>
