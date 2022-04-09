@@ -26,8 +26,8 @@ http://example.com/tags/Linux/
 http://example.com/tags/MacOS/
 http://example.com/tags/PyTorch/
 http://example.com/tags/Computer-Architecture/
-http://example.com/tags/Computer-Networks/
 http://example.com/tags/CMake/
+http://example.com/tags/Computer-Networks/
 http://example.com/categories/Literature-Review/
 http://example.com/categories/Notes/
 http://example.com/categories/Solutions/
